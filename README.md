@@ -1,4 +1,4 @@
-### Analysis of online CRT news coverage
+## Analysis of online CRT news coverage
 #### Anna Lieb's Senior Thesis, Fall 2023
 
 **1. Data collection**
@@ -13,3 +13,9 @@
 	* Creates `relevant_results` folder, with a file for each state that includes the relevant label to identify CRT-relevant headlines. 
 * `select_relevant.py` takes all files from the `relevant_results` folder and generates a dataframe with rows corresponding to each unique headline. Each headline has a column to count the number of occurrences of the headline in each state's results. 
 	* Creates `all_relevant.csv`, which contains headlines and their occurrence by state for all unique headlines that are relevant to CRT. 
+
+**2. Visualization**
+* `make_relevance_plot.py` creates term frequency charts in plotly express for a given set of states
+
+**3. Clustering for training dataset selection**
+* `make_sentence.py`

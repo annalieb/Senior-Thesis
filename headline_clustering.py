@@ -38,7 +38,8 @@ def main():
     # to find 100 closest to each centroid
     cos_sim = util.cos_sim(embeddings, centroids)
     cos_sim = cos_sim.numpy()
-    centers = np.argmax(cos_sim, axis=0)
+    # get max cosine similarity for each column, ie. closest sentence for each cluster
+    centers = np.argmax(cos_sim, axis=0) 
     center_headlines = [sentences[i] for i in centers]
 
     # write headline cluster centers to .csv file
@@ -46,39 +47,27 @@ def main():
     centers_df = pd.DataFrame({"cluster_label": num_clusters, 
                                "cluster_center": center_headlines})
     centers_df.to_csv('cluster_centers.csv', index=False)
-    
-"""     # Add all pairs to a list with their cosine similarity score
-    all_sentence_combinations = []
-    for i in range(len(cos_sim)-1):
-        for j in range(i+1, len(cos_sim)):
-            all_sentence_combinations.append([cos_sim[i][j], i, j])
 
-    # Sort list by the highest cosine similarity score
-    all_sentence_combinations = sorted(all_sentence_combinations, key=lambda x: x[0], reverse=True)
-
-    print("Top-5 most similar pairs:")
-    for score, i, j in all_sentence_combinations[0:5]:
-        print("{} \t {} \t {:.4f}".format(sentences[i], sentences[j], cos_sim[i][j])) """
 
 main()
 
-def test(): 
-    X = np.array([[1, 2], [1.2, 4.2], [1, 0],
-                  [10, 2], [10.2, 4.2], [10, 0]])
-    kmeans = KMeans(n_clusters=2, random_state=0, n_init="auto").fit(X)
-    centroids = kmeans.cluster_centers_
-    print(centroids)
-    # centroids: [10.,  2.], [ 1.,  2.]
-
-    centroid_ind = []
-    for c in centroids: 
-        centroid_ind.append(np.where((X == c).all(axis=1)))
-    print(centroid_ind)
-    print(len(centroid_ind))
-
-    a = np.array([[0, 1, 2],
-                  [0, 2, 4],
-                  [0, 3, 6]])
-    print(np.where((a == [0, 1, 2]).all(axis=1)))
+##def test(): 
+##    X = np.array([[1, 2], [1.2, 4.2], [1, 0],
+##                  [10, 2], [10.2, 4.2], [10, 0]])
+##    kmeans = KMeans(n_clusters=2, random_state=0, n_init="auto").fit(X)
+##    centroids = kmeans.cluster_centers_
+##    print(centroids)
+##    # centroids: [10.,  2.], [ 1.,  2.]
+##
+##    centroid_ind = []
+##    for c in centroids: 
+##        centroid_ind.append(np.where((X == c).all(axis=1)))
+##    print(centroid_ind)
+##    print(len(centroid_ind))
+##
+##    a = np.array([[0, 1, 2],
+##                  [0, 2, 4],
+##                  [0, 3, 6]])
+##    print(np.where((a == [0, 1, 2]).all(axis=1)))
 
 # test()

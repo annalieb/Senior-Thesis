@@ -76,6 +76,6 @@ def plot_relevance(states_list, interval="daily"):
     fig.show()
 
 def main():
-    plot_relevance(["FL", "VA", "IL", "KS"], "bimonthly")
+    plot_relevance(["USA"], "bimonthly")
 
 main()

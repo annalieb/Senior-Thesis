@@ -9,7 +9,8 @@ def read_results(state_abrv):
     '''Takes the state_abrv (ie. NJ) and returns a pandas dataframe
     with all articles collected from that state'''
     results = pd.read_csv(f"gdelt_results/{state_abrv}/" + os.listdir(f"gdelt_results/{state_abrv}")[0])
-    for f in os.listdir(f"gdelt_results/{state_abrv}")[1:]: 
+    for f in [f for f in os.listdir(f"gdelt_results/{state_abrv}") if f != ".DS_Store"]:
+        print(f"gdelt_results/{state_abrv}/{f}")
         temp = pd.read_csv(f"gdelt_results/{state_abrv}/{f}")
         results = pd.concat([results, temp])
 
@@ -59,7 +60,7 @@ def get_relevance_for(state_abrv):
     results = write_relevant_csv(results, labels, state_abrv)
 
 def main():
-    for state in ["ALL_RELEV"]:
+    for state in ["NY"]:
         if state != ".DS_Store":
             try:
                 print(f"Getting relevance labels for {state}")

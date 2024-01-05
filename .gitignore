@@ -9,6 +9,9 @@
 ehthumbs.db
 Thumbs.db
 
+# ignore API key
+openai-key.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

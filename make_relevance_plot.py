@@ -62,13 +62,20 @@ def plot_relevance(states_list, interval="daily"):
     first_s = states_list[0]
     means = avg_by_date(f"relevant_results/{first_s}_labeled.csv",
                                    interval)
-    fig = px.line(means, x='date', y='relevant')
+    labels = {"date": "Date",
+              "relevant": "Relevance (proportion of state coverage)"}
+    fig = px.line(means, x='date', y='relevant', labels=labels)
     fig.data[0].name=first_s
     fig.update_traces(showlegend=True)
     
     for s in states_list[1:]:
         means = avg_by_date(f"relevant_results/{s}_labeled.csv",
                                        interval)
+        n_intervals = len(means['relevant'])
+        trimester = (n_intervals // 3)
+        if max(means['relevant'][trimester*2: trimester*3] > 0.04):
+            print(f"Warning: {s} has high coverage {means['date'][trimester*2]} through {means['date'][trimester*3]}")
+            print(f"max:{max(means['relevant'][trimester*2:(trimester*3)])}")
         fig.add_scatter(x=means['date'],
                         y=means['relevant'],
                         mode='lines',
@@ -76,11 +83,17 @@ def plot_relevance(states_list, interval="daily"):
     fig.show()
 
 def main():
+##    plot_relevance(["FL", "OK", "VA", "MS", "SD"],
+##                   "bimonthly")
+##
     plot_relevance(["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL",
                     "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA",
                     "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE",
                     "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK",
                     "OR", "PA", "SC", "RI", "SD", "TN", "TX", "UT", "VT",
-                    "VA", "WV", "WI", "WY"], "bimonthly")
+                    "VA", "WV", "WI", "WY"],
+                   "bimonthly")
+
+    
 
 main()

@@ -1,0 +1,75 @@
+import sys
+import os
+from openai import OpenAI
+import tiktoken
+client = OpenAI()
+
+# API reference: https://platform.openai.com/docs/api-reference/chat/create?lang=python
+# overview of models: https://platform.openai.com/docs/models/gpt-3-5
+# token pricing: https://openai.com/pricing
+
+# properties of gpt-3.5-turbo: 
+# Max tokens / max context length: 4096 
+# Cost per 1k tokens: $0.002 
+
+key_file = open("openai-key.txt", "r")
+openai.api_key = key_file.readline()
+
+def single_query(messages,stop="\n\n",maxTokens=500):
+
+    # calculate absolute max tokens in context
+    num_prompt_tokens = count_tokens_from_msgs(messages)
+    maxTokens = 4096 - num_prompt_tokens 
+    # alternatively, keep maxTokens at hard-coded value (500) to avoid buying excessive tokens
+
+    response = {}
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo", 
+            messages=messages, # previous message history
+            temperature=0.5, # default 1, ranges from 0 to 2, with 0 = more deterministic and 2 = more random
+            max_tokens=maxTokens, # max num tokens to generate in completion
+            n=1, # default 1, num completions to generate for each prompt
+            frequency_penalty=0, # Positive val decreases the model's likelihood to repeat the same line verbatim.
+            presence_penalty=0, # Positive val increases the model's likelihood to talk about new topics
+            # don't need to specify stop token for chat
+    )
+    
+    except openai.APIError as e:
+        print(f"OpenAI API returned an API Error: {e}")
+        pass
+    except openai.APIConnectionError as e:
+        print(f"Failed to connect to OpenAI API: {e}")
+        pass
+    except openai.RateLimitError as e:
+        #Handle rate limit error (we recommend using exponential backoff)
+        print(f"OpenAI API request exceeded rate limit: {e}")
+        pass
+
+    return response
+
+def count_tokens_from_msgs(messages, model="gpt-3.5-turbo"):
+    '''Returns the number of tokens in a ChatGPT message history (including system message). 
+    Uses gpt-3.5-turbo tokenizer encoding. '''
+    encoding = tiktoken.encoding_for_model(model)
+    num_tokens = 0
+    for message in messages:
+        num_tokens += 4  # every message follows <im_start>{role/name}\n{content}<im_end>\n
+        for key, value in message.items():
+            num_tokens += len(encoding.encode(value))
+            if key == "name":  # if there's a name, the role is omitted
+                num_tokens += -1  # role is always required and always 1 token
+    num_tokens += 2  # every reply is primed with <im_start>assistant
+    return num_tokens
+
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: python query_gpt35.py input")
+        return
+    result = single_query(sys.argv[1]) 
+    print(result)
+
+if __name__ == '__main__':
+    main()
+

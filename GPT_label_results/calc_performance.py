@@ -26,7 +26,7 @@ def get_classwise_f1():
         "<NONE/OTHER>": 3,
         "none/other": 3, 
         # action direction
-        # action stance
+        # headline stance
     }
 
     ##### ACTOR #####
@@ -40,5 +40,7 @@ def get_classwise_f1():
     action_pred = [conversions[l] for l in all_labels['action_pred']]
     classwise_f1 = f1_score(action_true, action_pred, average=None)
     print(classwise_f1)
+
+    ##### ACTION DIRECTION #####
 
 get_classwise_f1()

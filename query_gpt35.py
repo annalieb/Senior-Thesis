@@ -1,8 +1,8 @@
 import sys
 import os
+import openai
 from openai import OpenAI
 import tiktoken
-client = OpenAI()
 
 # API reference: https://platform.openai.com/docs/api-reference/chat/create?lang=python
 # overview of models: https://platform.openai.com/docs/models/gpt-3-5
@@ -12,10 +12,9 @@ client = OpenAI()
 # Max tokens / max context length: 4096 
 # Cost per 1k tokens: $0.002 
 
-key_file = open("openai-key.txt", "r")
-openai.api_key = key_file.readline()
+client = OpenAI()
 
-def single_query(messages,stop="\n\n",maxTokens=500):
+def single_query(messages,stop="\n\n",maxTokens=256):
 
     # calculate absolute max tokens in context
     num_prompt_tokens = count_tokens_from_msgs(messages)
@@ -26,7 +25,7 @@ def single_query(messages,stop="\n\n",maxTokens=500):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo", 
+            model="gpt-4-1106-preview", 
             messages=messages, # previous message history
             temperature=0.5, # default 1, ranges from 0 to 2, with 0 = more deterministic and 2 = more random
             max_tokens=maxTokens, # max num tokens to generate in completion

@@ -14,7 +14,7 @@ import tiktoken
 
 client = OpenAI()
 
-def single_query(messages,stop="\n\n",maxTokens=256):
+def single_query(messages,stop="\n\n",maxTokens=128):
 
     # calculate absolute max tokens in context
     num_prompt_tokens = count_tokens_from_msgs(messages)
@@ -27,7 +27,7 @@ def single_query(messages,stop="\n\n",maxTokens=256):
         response = client.chat.completions.create(
             model="gpt-4-1106-preview", 
             messages=messages, # previous message history
-            temperature=0.5, # default 1, ranges from 0 to 2, with 0 = more deterministic and 2 = more random
+            temperature=0, # default 1, ranges from 0 to 2, with 0 = more deterministic and 2 = more random
             max_tokens=maxTokens, # max num tokens to generate in completion
             n=1, # default 1, num completions to generate for each prompt
             frequency_penalty=0, # Positive val decreases the model's likelihood to repeat the same line verbatim.
@@ -48,7 +48,7 @@ def single_query(messages,stop="\n\n",maxTokens=256):
 
     return response
 
-def count_tokens_from_msgs(messages, model="gpt-3.5-turbo"):
+def count_tokens_from_msgs(messages, model="gpt-4-1106-preview"):
     '''Returns the number of tokens in a ChatGPT message history (including system message). 
     Uses gpt-3.5-turbo tokenizer encoding. '''
     encoding = tiktoken.encoding_for_model(model)

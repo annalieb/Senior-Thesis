@@ -1,11 +1,11 @@
-import query_gpt35
+import query_gpt4
 import pandas as pd
 
 def get_gpt_response(prompt):
     # print("API input: \n", prompt)
     
     # query model
-    response = query_gpt35.single_query(prompt)
+    response = query_gpt4.single_query(prompt)
     # print(response)
     completion = response.choices[0].message
     print("GPT model version:", response.model)
@@ -60,6 +60,52 @@ def get_one_action(headline):
     completion = get_gpt_response(message)
     return completion
 
+def get_one_action_direction(headline): 
+    action_direction_prompt = f'''News article headlines can shape the ways that people perceive current events and understand the world around them. Therefore, nuances in the headline's language and word choice can be very important. The goal of this task is to identify the impact of an action or event taking place in a news headline. 
+
+    You will be given a news headline related to critical race theory (CRT). Your response should identify the action direction in the headline. Your response must be one of the following predefined labels: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
+
+    Please carefully consider the following label definitions: 
+    <ANTI-CRT> - The headline reports on anti-CRT actions that restrict teaching CRT, actions taken to speak out against CRT, or any other anti-CRT actions taken to counter CRT. 
+    <DEFENDING CRT> - The headline reports on actions that defend teaching CRT, actions taken to speak out in support of CRT, or any other actions taken to counter anti-CRT efforts.
+    <NEUTRAL> - The headline does not clearly identify an action, or the action does not make change in either direction (neither for or against CRT). 
+
+    Your interpretations of the headline should be guided by the main actions or events that stand out in the headline. Consider that the headline action might belong to one of the categories implicitly, without direct reference to exact words or examples provided in the label definition.
+
+    Please consider the following headline: "{headline}"
+    Consider the main action taking place in the headline. What is the action's impact? Please respond with exactly one of the following predefined labels that best describes the action direction in this headline: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
+    '''
+
+    message = [
+        {"role": "user", "content": action_direction_prompt}
+    ]
+
+    completion = get_gpt_response(message)
+    return completion
+
+def get_one_stance(headline): 
+    action_direction_prompt = f'''News article headlines can shape the ways that people perceive current events and understand the world around them. Therefore, nuances in the headline's language and word choice can be very important. The goal of this task is to identify the stance or bias of a news headline. 
+
+    You will be given a news headline related to critical race theory (CRT). Your response should identify the stance of the headline. Your response must be one of the following predefined labels: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
+
+    Please carefully consider the following label definitions: 
+    <ANTI-CRT> - The headline appears to oppose CRT, support CRT bans, or make alarmist claims about threats posed by CRT. It favors an anti-CRT viewpoint. It has an anti-CRT stance. 
+    <DEFENDING CRT> - The headline appears to support CRT, oppose CRT bans, or minimize the threat posed by CRT-related curricula. It favors a viewpoint that defends CRT. It has a stance that defends CRT. 
+    <NEUTRAL> - The headline is neutral or impartial. It reports on news events without favoring one viewpoint or the other (neither anti-CRT nor defending CRT). 
+
+    Your interpretations of the headline should be guided by polarizing terms that stand out in the headline, which may indicate the headline’s stance. Consider that the headline stance might belong to one of the categories implicitly, without direct reference to exact words or examples provided in the label definition.
+
+    Please consider the following headline: "{headline}"
+    Consider any biased framing in the headline. What is the headline's stance? Please respond with exactly one of the following predefined labels that best describes the stance in this headline: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
+    '''
+
+    message = [
+        {"role": "user", "content": action_direction_prompt}
+    ]
+
+    completion = get_gpt_response(message)
+    return completion
+
 def get_many_labels(val, label_type): 
     '''params: 
     val - validation set
@@ -74,6 +120,10 @@ def get_many_labels(val, label_type):
             resp = get_one_action(h)
         elif label_type == "actor": 
             resp = get_one_actor(h)
+        elif label_type == "action direction": 
+            resp = get_one_action_direction(h)
+        elif label_type == "headline stance": 
+            resp = get_one_stance(h)
         else: 
             print(f"ERROR: no label_type {label_type}")
             return None
@@ -83,8 +133,8 @@ def get_many_labels(val, label_type):
         print(f"predicted: {pred}")
         print(f"actual: {label}")
 
-    val.insert(3, f"{label_type}_pred", preds)
-    val.to_csv("GPT_label_results/action_preds.csv")
+    val.insert(4, f"{label_type}_pred", preds)
+    val.to_csv("GPT_label_results/headline_stance_preds.csv")
 
 
 def main():
@@ -96,11 +146,19 @@ def main():
     # read in test data
     val = pd.read_csv("coding/complete_consensus_coding.csv")
 
+    # get_many_labels costs about $0.28 for 139 headlines
+
     # get actor labels for validation dataset
     # get_many_labels(val, "actor")
 
     # get action labels for validation dataset
-    get_many_labels(val, "action")
+    # get_many_labels(val, "action")
+
+    # get action direction labels for validation dataset
+    # get_many_labels(val, "action direction")
+
+    # get headline stance labels for validation dataset
+    # get_many_labels(val, "headline stance")
 
 
 main()

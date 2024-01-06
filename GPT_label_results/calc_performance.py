@@ -25,8 +25,13 @@ def get_classwise_f1():
         "threats/extent": 2,
         "<NONE/OTHER>": 3,
         "none/other": 3, 
-        # action direction
-        # headline stance
+        # action direction and headline stance
+        "<ANTI-CRT>": 0, 
+        "anti-CRT": 0, 
+        "<DEFENDING CRT>": 1,
+        "defending CRT": 1,
+        "<NEUTRAL>": 2, 
+        "neutral": 2
     }
 
     ##### ACTOR #####
@@ -42,5 +47,15 @@ def get_classwise_f1():
     print(classwise_f1)
 
     ##### ACTION DIRECTION #####
+    direction_true = [conversions[l] for l in all_labels['action direction']]
+    direction_pred = [conversions[l] for l in all_labels['action direction_pred']]
+    classwise_f1 = f1_score(direction_true, direction_pred, average=None)
+    print(classwise_f1)
+
+    ##### HEADLINE STANCE #####
+    stance_true = [conversions[l] for l in all_labels['headline stance']]
+    stance_pred = [conversions[l] for l in all_labels['headline stance_pred']]
+    classwise_f1 = f1_score(stance_true, stance_pred, average=None)
+    print(classwise_f1)
 
 get_classwise_f1()

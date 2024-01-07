@@ -8,95 +8,133 @@ library("irr")
 
 setwd("/Users/annalieb/Documents/Thesis/Senior-Thesis")
 
-############ Read in v3 files ############
-r1_v3 <- read.csv("coding/Anna_coding_v3.csv",header=TRUE)
-r2_v3 <- read.csv("coding/Ariel_coding_v3.csv",header=TRUE)
-r3_v3 <- read.csv("coding/Tarishi_coding_v3.csv",header=TRUE)
+############ Read in coding files with labels ############
+r1 <- read.csv("coding/complete_Anna_coding.csv",header=TRUE)
+r2 <- read.csv("coding/complete_Ariel_coding.csv",header=TRUE)
+r3 <- read.csv("coding/complete_Tarishi_coding.csv",header=TRUE)
+gpt <- read.csv("coding/complete_GPT_coding.csv",header=TRUE)
+consensus <- read.csv("coding/complete_consensus_coding.csv", header=TRUE)
 
-# remove rows that have misc. labeler notes
-r1_v3 <- r1_v3[1:50, 1:5]
-r2_v3 <- r2_v3[1:50, 1:5]
-r3_v3 <- r3_v3[1:50, 1:5]
-# remove index 32, 38, 39, and 50
-r1_v3 <- r1_v3[-c(32, 38, 39, 50),]
-r2_v3 <- r2_v3[-c(32, 38, 39, 50),]
-r3_v3 <- r3_v3[-c(32, 38, 39, 50),]
-# combine policy with elections
-r1_v3$action[r1_v3$action == "elections"] <- "policy & legal"
-r2_v3$action[r2_v3$action == "elections"] <- "policy & legal"
-r3_v3$action[r3_v3$action == "elections"] <- "policy & legal"
+clean_labels <- function(df) {
+  # remove rows that are not relevant: 32, 38, 39, 50, 68, 72, 131, 133
+  df <- df[-c(32, 38, 39, 50, 68, 72, 131, 133),]
+  # remove the first duplicated instance 
+  # (label was generated later, with more coding experience)
+  df <- df[-which(duplicated(df$Title, fromLast = TRUE)),]
+  # remove rows that have misc. labeller notes
+  df <- df[, 1:5]
+  # combine policy with elections
+  df$action[df$action == "elections"] <- "policy & legal"
+  # reset indices
+  row.names(df) <- NULL
+  return(df)
+}
+
+r1 <- clean_labels(r1)
+r2 <- clean_labels(r2)
+r3 <- clean_labels(r3)
+
+sum(r1$Title != gpt$Title & r2$Title != gpt$Title & r3$Title != gpt$Title)
+
+convert_labels <- function(df) {
+  df$actor[df$actor == "educational practitioners"] <- 0
+  df$actor[df$actor == "political influencers"] <- 1
+  df$actor[df$actor == "impacted actors"] <- 2
+  df$actor[df$actor == "none / other"] <- 3
+  
+  df$action[df$action == "protest / speaking out"] <- 0
+  df$action[df$action == "policy & legal"] <- 1
+  df$action[df$action == "threats/extent"] <- 2
+  df$action[df$action == "none/other"] <- 3
+  
+  df$action.direction[df$action.direction=="anti-CRT"] <- -1
+  df$action.direction[df$action.direction=="neutral"] <- 0
+  df$action.direction[df$action.direction=="defending CRT"] <- 1
+  
+  df$headline.stance[df$headline.stance=="anti-CRT"] <- -1
+  df$headline.stance[df$headline.stance=="neutral"] <- 0
+  df$headline.stance[df$headline.stance=="defending CRT"] <- 1
+  
+  return(df)
+}
+
+convert_gpt_labels <- function(df) {
+  df$actor[df$actor == "<EDUCATIONAL PRACTITIONER>"] <- 0
+  df$actor[df$actor == "<POLITICAL INFLUENCER>"] <- 1
+  df$actor[df$actor == "<IMPACTED ACTOR>"] <- 2
+  df$actor[df$actor == "<NONE/OTHER>"] <- 3
+  
+  df$action[df$action == "<PROTEST / SPEAKING OUT>"] <- 0
+  df$action[df$action == "<POLICY / LEGAL / ELECTIONS>"] <- 1
+  df$action[df$action == "<THREATS / EXTENT>"] <- 2
+  df$action[df$action == "<NONE/OTHER>"] <- 3
+  
+  df$action.direction[df$action.direction=="<ANTI-CRT>"] <- -1
+  df$action.direction[df$action.direction=="<NEUTRAL>"] <- 0
+  df$action.direction[df$action.direction=="<DEFENDING CRT>"] <- 1
+  
+  df$headline.stance[df$headline.stance=="<ANTI-CRT>"] <- -1
+  df$headline.stance[df$headline.stance=="<NEUTRAL>"] <- 0
+  df$headline.stance[df$headline.stance=="<DEFENDING CRT>"] <- 1
+  
+  return(df)
+}
+
+r1 <- convert_labels(r1)
+r2 <- convert_labels(r2)
+r3 <- convert_labels(r3)
+consensus <- convert_labels(consensus)
+gpt <- convert_gpt_labels(gpt)
 
 # make variables as.factor
-col_names <- names(r1_v3)
-r1_v3[col_names] <- lapply(r1_v3[col_names], factor)
-r2_v3[col_names] <- lapply(r2_v3[col_names], factor)
-r3_v3[col_names] <- lapply(r3_v3[col_names], factor)
+col_names <- names(r1)[2:5]
+r1[col_names] <- lapply(r1[col_names], factor)
+r2[col_names] <- lapply(r2[col_names], factor)
+r3[col_names] <- lapply(r3[col_names], factor)
+gpt[col_names] <- lapply(gpt[col_names], factor)
+consensus[col_names] <- lapply(consensus[col_names], factor)
 
-# convert ordinal variables to -1 (anti), 1 (defending), and 0 (neutral)
-levels(r1_v3$action.direction) <- c(-1, 1, 0)
-levels(r2_v3$action.direction) <- c(-1, 1, 0)
-levels(r3_v3$action.direction) <- c(-1, 1, 0)
-levels(r1_v3$headline.stance) <- c(-1, 1, 0)
-levels(r2_v3$headline.stance) <- c(-1, 1, 0)
-levels(r3_v3$headline.stance) <- c(-1, 1, 0)
-
-############ Read in v4 files ############
-r1_v4 <- read.csv("coding/Anna_coding_v4.csv",header=TRUE)
-r2_v4 <- read.csv("coding/Ariel_coding_v4.csv",header=TRUE)
-r3_v4 <- read.csv("coding/Tarishi_coding_v4.csv",header=TRUE)
-
-# EDIT THIS SECTION AFTER FINAL LABELS ARE IN #
-# remove rows that have misc. labeler notes
-r1_v4 <- r1_v4[1:50, 1:5]
-r2_v4 <- r2_v4[1:50, 1:5]
-r3_v4 <- r3_v4[1:50, 1:5]
-# remove index 18, 22
-r1_v4 <- r1_v4[-c(18, 22),]
-r2_v4 <- r2_v4[-c(18, 22),]
-r3_v4 <- r3_v4[-c(18, 22),]
-# combine policy with elections
-r1_v4$action[r1_v4$action == "elections"] <- "policy & legal"
-r2_v4$action[r2_v4$action == "elections"] <- "policy & legal"
-r3_v4$action[r3_v4$action == "elections"] <- "policy & legal"
-
-# make variables as.factor
-col_names <- names(r1_v4)
-r1_v4[col_names] <- lapply(r1_v4[col_names], factor)
-r2_v4[col_names] <- lapply(r2_v4[col_names], factor)
-r3_v4[col_names] <- lapply(r3_v4[col_names], factor)
-
-# convert ordinal variables to -1 (anti), 1 (defending), and 0 (neutral)
-levels(r1_v4$action.direction) <- c(-1, 1, 0)
-levels(r2_v4$action.direction) <- c(-1, 1, 0)
-levels(r3_v4$action.direction) <- c(-1, 1, 0)
-levels(r1_v4$headline.stance) <- c(-1, 1, 0)
-levels(r2_v4$headline.stance) <- c(-1, 1, 0)
-levels(r3_v4$headline.stance) <- c(-1, 1, 0)
-
-## Combine results
-r1 <- rbind(r1_v3, r1_v4)
-r2 <- rbind(r2_v3, r2_v4)
-r3 <- rbind(r3_v3, r3_v4)
+############ Calculate alpha ############
 
 ## Validity concerns with rater 2; coding was being entered concurrently 
 # during group meeting to find consensus
 
-# actors alpha: 0.695 
-actors <- t(cbind(r1$actor, r3$actor))
-actors_alpha <- kripp.alpha(actors, method="nominal")
+# For fully-crossed designs with three or more coders, Light (1971) suggests 
+# computing kappa for all coder pairs then using the arithmetic mean of 
+# these estimates to provide an overall index of agreement. 
+# ... Light’s solution can easily be implemented by computing kappa for all 
+# coder pairs using statistical software then manually computing the arithmetic mean.
+
+# actors alpha: 0.672
+actors <- cbind(r1$actor, r3$actor)
+actors_alpha <- kappam.fleiss(actors)
 actors_alpha
 
-# action alpha: 0.636 
-action <- t(cbind(r1$action, r3$action))
-action_alpha <- kripp.alpha(action, method="nominal")
+# with gpt: 0.694 
+actors <- cbind(r1$actor, r3$actor, gpt$actor)
+actors_alpha <- kappam.fleiss(actors)
+actors_alpha
+
+# action alpha: 0.609
+kappa2(cbind(r1$action, r3$action))
+
+# with gpt: 0.481
+action <- cbind(r1$action, r3$action, gpt$action)
+action_alpha <- kappam.fleiss(action)
 action_alpha
 
-# action direction: 0.716 
-direction <- t(cbind(r1$action.direction, r3$action.direction))
-direction_alpha <- kripp.alpha(direction, method="ordinal")
-direction_alpha
+# action direction: 0.681 
+kappa2(cbind(r1$action.direction, r3$action.direction))
+# with gpt: 0.633
+a1 <- kappa2(cbind(r1$action.direction, r3$action.direction))$value
+a2 <- kappa2(cbind(r1$action.direction, gpt$action.direction))$value
+a3 <- kappa2(cbind(gpt$action.direction, r3$action.direction))$value
+mean(c(a1, a2, a3))
 
-# headline stance: 0.862 
-stance <- t(cbind(r1$headline.stance, r3$headline.stance))
-stance_alpha <- kripp.alpha(stance, method="ordinal")
-stance_alpha
+# headline stance: 0.742 
+kappa2(cbind(r1$headline.stance, r3$headline.stance))
+# with gpt: 0.662
+a1 <- kappa2(cbind(r1$headline.stance, r3$headline.stance))$value
+a2 <- kappa2(cbind(r1$headline.stance, gpt$headline.stance))$value
+a3 <- kappa2(cbind(gpt$headline.stance, r3$headline.stance))$value
+mean(c(a1, a2, a3))

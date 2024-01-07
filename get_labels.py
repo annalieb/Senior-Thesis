@@ -70,6 +70,8 @@ def get_one_action_direction(headline):
     <DEFENDING CRT> - The headline reports on actions that defend teaching CRT, actions taken to speak out in support of CRT, or any other actions taken to counter anti-CRT efforts.
     <NEUTRAL> - The headline does not clearly identify an action, or the action does not make change in either direction (neither for or against CRT). 
 
+    Note that the impact of the event in the headline is different from the headline stance or bias. For example, consider the following headline: "Florida bans critical race theory from classrooms." For this headline, the headline stance is neutral because the headline does not reveal a strong journalistic bias for or against CRT. However, the action taking place has an anti-CRT impact because the ban would prevent teaching CRT in classrooms. Therefore, this headline stance would have the <ANTI-CRT> label.
+
     Your interpretations of the headline should be guided by the main actions or events that stand out in the headline. Consider that the headline action might belong to one of the categories implicitly, without direct reference to exact words or examples provided in the label definition.
 
     Please consider the following headline: "{headline}"
@@ -89,11 +91,13 @@ def get_one_stance(headline):
     You will be given a news headline related to critical race theory (CRT). Your response should identify the stance of the headline. Your response must be one of the following predefined labels: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
 
     Please carefully consider the following label definitions: 
-    <ANTI-CRT> - The headline appears to oppose CRT, support CRT bans, or make alarmist claims about threats posed by CRT. It favors an anti-CRT viewpoint. It has an anti-CRT stance. 
-    <DEFENDING CRT> - The headline appears to support CRT, oppose CRT bans, or minimize the threat posed by CRT-related curricula. It favors a viewpoint that defends CRT. It has a stance that defends CRT. 
-    <NEUTRAL> - The headline is neutral or impartial. It reports on news events without favoring one viewpoint or the other (neither anti-CRT nor defending CRT). 
+    <ANTI-CRT> - The headline favors an anti-CRT viewpoint. Its viewpoint appears to oppose CRT, support CRT bans, or make alarmist claims about threats posed by CRT. It has an anti-CRT stance. 
+    <DEFENDING CRT> - The headline favors a viewpoint that defends CRT. Its viewpoint appears to support CRT, oppose CRT bans, or minimize the threat posed by CRT-related curricula. It has a stance that defends CRT. 
+    <NEUTRAL> - The headline does not have a strong viewpoint. It is neutral or impartial. It reports on news events without favoring one viewpoint or the other (neither anti-CRT nor defending CRT). 
 
-    Your interpretations of the headline should be guided by polarizing terms that stand out in the headline, which may indicate the headline’s stance. Consider that the headline stance might belong to one of the categories implicitly, without direct reference to exact words or examples provided in the label definition.
+    Note that the impact of the event in the headline is different from the headline stance or bias. For example, consider the following headline: "Florida bans critical race theory from classrooms." For this headline, the action taking place has an anti-CRT impact because the ban would prevent teaching CRT in classrooms. However, in this case, the headline stance is neutral because the headline does not reveal a strong journalistic bias for or against CRT. Therefore, this headline stance would have the <NEUTRAL> label.
+
+    Your interpretations of the headline should be guided by polarizing terms that stand out in the headline, which may indicate the headline's stance. Consider that the headline stance might belong to one of the categories implicitly, without direct reference to exact words or examples provided in the label definition.
 
     Please consider the following headline: "{headline}"
     Consider any biased framing in the headline. What is the headline's stance? Please respond with exactly one of the following predefined labels that best describes the stance in this headline: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
@@ -155,7 +159,7 @@ def main():
     # get_many_labels(val, "action")
 
     # get action direction labels for validation dataset
-    # get_many_labels(val, "action direction")
+    get_many_labels(val, "action direction")
 
     # get headline stance labels for validation dataset
     # get_many_labels(val, "headline stance")

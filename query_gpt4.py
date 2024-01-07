@@ -1,6 +1,7 @@
 import sys
 import os
 import openai
+import backoff 
 from openai import OpenAI
 import tiktoken
 
@@ -14,6 +15,11 @@ import tiktoken
 
 client = OpenAI()
 
+# handle rate limit error with exponential backoff
+@backoff.on_exception(backoff.expo, openai.RateLimitError)
+def completions_with_backoff(**kwargs):
+    return client.chat.completions.create(**kwargs)
+
 def single_query(messages,stop="\n\n",maxTokens=128):
 
     # calculate absolute max tokens in context
@@ -24,7 +30,7 @@ def single_query(messages,stop="\n\n",maxTokens=128):
     response = {}
 
     try:
-        response = client.chat.completions.create(
+        response = completions_with_backoff(
             model="gpt-4-1106-preview", 
             messages=messages, # previous message history
             temperature=0, # default 1, ranges from 0 to 2, with 0 = more deterministic and 2 = more random
@@ -34,16 +40,16 @@ def single_query(messages,stop="\n\n",maxTokens=128):
             presence_penalty=0, # Positive val increases the model's likelihood to talk about new topics
             # don't need to specify stop token for chat
     )
-    
-    except openai.APIError as e:
-        print(f"OpenAI API returned an API Error: {e}")
-        pass
     except openai.APIConnectionError as e:
         print(f"Failed to connect to OpenAI API: {e}")
         pass
     except openai.RateLimitError as e:
-        #Handle rate limit error (we recommend using exponential backoff)
+        # this shouldn't ever happen
+        print("Uh oh... exponential backoff isn't working")
         print(f"OpenAI API request exceeded rate limit: {e}")
+        pass
+    except openai.APIError as e:
+        print(f"OpenAI API returned an API Error: {e}")
         pass
 
     return response
@@ -64,7 +70,7 @@ def count_tokens_from_msgs(messages, model="gpt-4-1106-preview"):
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python query_gpt35.py input")
+        print("Usage: python query_gpt4.py input")
         return
     result = single_query(sys.argv[1]) 
     print(result)

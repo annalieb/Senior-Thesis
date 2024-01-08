@@ -4,7 +4,8 @@ import pandas as pd
 from collections import Counter
 
 def get_classwise_f1(): 
-    all_labels = pd.read_csv("all_preds.csv")
+    #all_labels = pd.read_csv("all_preds.csv")
+    all_labels = pd.read_csv("actor_35_preds.csv")
 
     conversions = {
         # actor

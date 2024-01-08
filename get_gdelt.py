@@ -9,7 +9,7 @@ warnings.filterwarnings("ignore")
 
 def make_dates():
     '''Create start and end date ranges for data collection'''
-    years = ["2021", "2022"]
+    years = ["2020", "2021", "2022"]
     months = [("01", 31), ("02", 28), ("03", 31), ("04", 30),
               ("05", 31), ("06", 30), ("07", 31), ("08", 31),
               ("09", 30), ("10", 31), ("11", 30), ("12", 31)]
@@ -91,10 +91,15 @@ def get_state_results(dates, state, state_abrv):
         # get 100 results per day, or 250 in the case of ALL_RELEV
         response = get_gdelt(url)
         if response is not None: # in case get_gdelt fails
-            articles += response["articles"]
+            try:
+                articles += response["articles"]
+            except KeyError:
+                print("key error for", url)
+                with open("skipped-articles.txt", "a") as myfile:
+                    myfile.write(url + '\n')
 
         if end[6:8] == "01": # reset after each month
-            print("Found", len(articles), "articles for", start[0:6])
+            print("Found", len(articles), "articles for", state_abrv, start[0:6])
             
             file_code = start[0:6] + "_" + end[0:6]
             file_name = f"gdelt_results/{state_abrv}/{state_abrv}_" + file_code + ".csv"
@@ -104,10 +109,36 @@ def get_state_results(dates, state, state_abrv):
             time.sleep(5)
 
 def main():
-    #!/usr/bin/python3.12
+    
     dates = make_dates()
     # [d for d in dates if int(d[:6]) > 202101]
-    get_state_results([d for d in dates if int(d[:6]) > 202209], "GET_ALL_RELEV", "ALL_RELEV")
+    states = [#("Alabama", "AL"), ("Alaska", "AK"), ("Arizona", "AZ"), ("Arkansas", "AK"),
+              #("California", "CA"), ("Colorado", "CO"),
+              ("Connecticut", "CT"),
+              ("Delaware", "DE"), ("Florida", "FL"), ("Georgia", "GA"), ("Hawaii", "HI"),
+              ("Idaho", "ID"), ("Illinois", "IL"), ("Indiana", "IN"), ("Iowa", "IA"),
+              ("Kansas", "KS"), ("Kentucky", "KY"), ("Louisiana", "LA"), ("Maine", "ME"),
+              ("Maryland", "MD"), ("Massachusetts", "MA"), ("Michigan", "MI"), ("Minnesota", "MN"),
+              ("Mississippi", "MS"), ("Missouri", "MO"), ("Montana", "MT"), ("Nebraska", "NB"),
+              ("Nevada", "NV"), ("New%20Hampshire", "NH"), ("New%20Jersey", "NJ"),
+              ("New%20Mexico", "NM"), ("New%20York", "NY"), ("North%20Carolina", "NC"),
+              ("North%20Dakota", "ND"), ("Ohio", "OH"), ("Oklahoma", "OK"), ("Oregon", "OR"),
+              ("Pennsylvania", "PA"), ("Rhode%20Island", "RI"), ("South%20Carolina", "SC"),
+              ("South%20Dakota", "SD"), ("Tennessee", "TN"), ("Texas", "TX"), ("Utah", "UT"),
+              ("Vermont", "VT"), ("Virginia", "VA"), ("West%20Virginia", "WV"), ("Wisconsin", "WI"),
+              ("Wyoming", "WY"), ("GET_ALL_RELEV", "ALL_RELEV")]
+
+    for state, abrv in states:
+        get_state_results([d for d in dates if (int(d[:6]) > 202007 and int(d[:4]) < 2021)] + ["20210101010101"],
+                          state, abrv)
+
+    # done:
+    # alaska
+    # alabama
+    # arkansas
+    # arizona
+    # california
+    
 
     # MISSING DATA FOR SOME MONTHS
     # list of urls with errors is available in skipped-articles.txt

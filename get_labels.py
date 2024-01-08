@@ -1,5 +1,6 @@
 import query_gpt4
 import pandas as pd
+import csv
 
 def get_gpt_response(prompt):
     # print("API input: \n", prompt)
@@ -8,8 +9,8 @@ def get_gpt_response(prompt):
     response = query_gpt4.single_query(prompt)
     # print(response)
     completion = response.choices[0].message
-    print("GPT model version:", response.model)
-    print("GPT response:", completion)
+    # print("GPT model version:", response.model)
+    # print("GPT response:", completion)
     print("GPT finish reason:", response.choices[0].finish_reason)
     return completion
 
@@ -137,18 +138,27 @@ def get_many_labels(val, label_type):
         print(f"predicted: {pred}")
         print(f"actual: {label}")
 
-    val.insert(4, f"{label_type}_pred", preds)
-    val.to_csv("GPT_label_results/headline_stance_preds.csv")
+    val.insert(2, f"{label_type}_pred", preds)
+    val.to_csv("GPT_label_results/actor_35_preds.csv")
+
+def get_gpt_labels_from_ind(start_ind, title_list): 
+    generated_rows = []
+    for i, t in enumerate(list(title_list)[start_ind:]): 
+        pred = get_one_actor(t).content
+        # print(pred, t) # uncomment for verbose version (see every headline and label)
+        generated_rows.append([t, pred]) # title, gpt_label
+        if i % 50 == 0:
+            print("processed 50 headlines, writing to file.")
+            with open("GPT_label_results/GPT_actors.csv", 'a', newline='\n') as f:
+                writer = csv.writer(f)
+                writer.writerows(generated_rows)
+            generated_rows = []
 
 
 def main():
-    # test_message = [
-    #     {"role": "user", "content": "What day did Russia invade Ukraine in 2022?"}
-    #     ]
-    # gpt_resp = get_gpt_response(test_message)
-
     # read in test data
     val = pd.read_csv("coding/complete_consensus_coding.csv")
+    all_data = pd.read_csv("all_relevant.csv")
 
     # get_many_labels costs about $0.28 for 139 headlines
 
@@ -159,10 +169,13 @@ def main():
     # get_many_labels(val, "action")
 
     # get action direction labels for validation dataset
-    get_many_labels(val, "action direction")
+    # get_many_labels(val, "action direction")
 
     # get headline stance labels for validation dataset
     # get_many_labels(val, "headline stance")
 
+    get_gpt_labels_from_ind(1033, all_data['title'])
+
 
 main()
+

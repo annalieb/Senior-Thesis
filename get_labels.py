@@ -9,9 +9,11 @@ def get_gpt_response(prompt):
     response = query_gpt4.single_query(prompt)
     # print(response)
     completion = response.choices[0].message
-    # print("GPT model version:", response.model)
+    if response.model != "gpt-4-1106-preview": 
+        print("GPT model version:", response.model)
     # print("GPT response:", completion)
-    print("GPT finish reason:", response.choices[0].finish_reason)
+    if response.choices[0].finish_reason != "stop": 
+        print("GPT finish reason:", response.choices[0].finish_reason)
     return completion
 
 def get_one_actor(headline): 
@@ -174,7 +176,7 @@ def main():
     # get headline stance labels for validation dataset
     # get_many_labels(val, "headline stance")
 
-    get_gpt_labels_from_ind(1033, all_data['title'])
+    get_gpt_labels_from_ind(2137, all_data['title'])
 
 
 main()

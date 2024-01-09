@@ -113,13 +113,13 @@ def main():
     dates = make_dates()
     # [d for d in dates if int(d[:6]) > 202101]
     states = [#("Alabama", "AL"), ("Alaska", "AK"), ("Arizona", "AZ"), ("Arkansas", "AK"),
-              #("California", "CA"), ("Colorado", "CO"),
-              ("Connecticut", "CT"),
-              ("Delaware", "DE"), ("Florida", "FL"), ("Georgia", "GA"), ("Hawaii", "HI"),
-              ("Idaho", "ID"), ("Illinois", "IL"), ("Indiana", "IN"), ("Iowa", "IA"),
-              ("Kansas", "KS"), ("Kentucky", "KY"), ("Louisiana", "LA"), ("Maine", "ME"),
-              ("Maryland", "MD"), ("Massachusetts", "MA"), ("Michigan", "MI"), ("Minnesota", "MN"),
-              ("Mississippi", "MS"), ("Missouri", "MO"), ("Montana", "MT"), ("Nebraska", "NB"),
+              #("California", "CA"), ("Colorado", "CO"), ("Connecticut", "CT"),
+              #("Delaware", "DE"), ("Florida", "FL"), ("Georgia", "GA"), ("Hawaii", "HI"),
+              #("Idaho", "ID"), ("Illinois", "IL"), ("Indiana", "IN"), ("Iowa", "IA"),
+              #("Kansas", "KS"), ("Kentucky", "KY"), ("Louisiana", "LA"), ("Maine", "ME"),
+              #("Maryland", "MD"), ("Massachusetts", "MA"), ("Michigan", "MI"), ("Minnesota", "MN"),
+              # ("Mississippi", "MS"), ("Missouri", "MO"), ("Montana", "MT"), 
+              ("Nebraska", "NE"),
               ("Nevada", "NV"), ("New%20Hampshire", "NH"), ("New%20Jersey", "NJ"),
               ("New%20Mexico", "NM"), ("New%20York", "NY"), ("North%20Carolina", "NC"),
               ("North%20Dakota", "ND"), ("Ohio", "OH"), ("Oklahoma", "OK"), ("Oregon", "OR"),
@@ -131,14 +131,6 @@ def main():
     for state, abrv in states:
         get_state_results([d for d in dates if (int(d[:6]) > 202007 and int(d[:4]) < 2021)] + ["20210101010101"],
                           state, abrv)
-
-    # done:
-    # alaska
-    # alabama
-    # arkansas
-    # arizona
-    # california
-    
 
     # MISSING DATA FOR SOME MONTHS
     # list of urls with errors is available in skipped-articles.txt

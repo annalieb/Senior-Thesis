@@ -109,32 +109,28 @@ def get_state_results(dates, state, state_abrv):
             time.sleep(5)
 
 def main():
-    
     dates = make_dates()
-    # [d for d in dates if int(d[:6]) > 202101]
-    states = [#("Alabama", "AL"), ("Alaska", "AK"), ("Arizona", "AZ"), ("Arkansas", "AK"),
-              #("California", "CA"), ("Colorado", "CO"), ("Connecticut", "CT"),
-              #("Delaware", "DE"), ("Florida", "FL"), ("Georgia", "GA"), ("Hawaii", "HI"),
-              #("Idaho", "ID"), ("Illinois", "IL"), ("Indiana", "IN"), ("Iowa", "IA"),
-              #("Kansas", "KS"), ("Kentucky", "KY"), ("Louisiana", "LA"), ("Maine", "ME"),
-              #("Maryland", "MD"), ("Massachusetts", "MA"), ("Michigan", "MI"), ("Minnesota", "MN"),
-              # ("Mississippi", "MS"), ("Missouri", "MO"), ("Montana", "MT"), 
-              ("Nebraska", "NE"),
+    states = [("Alabama", "AL"), ("Alaska", "AK"), ("Arizona", "AZ"), ("Arkansas", "AK"),
+              ("California", "CA"), ("Colorado", "CO"), ("Connecticut", "CT"),
+              ("Delaware", "DE"), ("Florida", "FL"), ("Georgia", "GA"), ("Hawaii", "HI"),
+              ("Idaho", "ID"), ("Illinois", "IL"), ("Indiana", "IN"), ("Iowa", "IA"),
+              ("Kansas", "KS"), ("Kentucky", "KY"), ("Louisiana", "LA"), ("Maine", "ME"),
+              ("Maryland", "MD"), ("Massachusetts", "MA"), ("Michigan", "MI"), ("Minnesota", "MN"),
+              ("Mississippi", "MS"), ("Missouri", "MO"), ("Montana", "MT"), ("Nebraska", "NE"),
               ("Nevada", "NV"), ("New%20Hampshire", "NH"), ("New%20Jersey", "NJ"),
               ("New%20Mexico", "NM"), ("New%20York", "NY"), ("North%20Carolina", "NC"),
               ("North%20Dakota", "ND"), ("Ohio", "OH"), ("Oklahoma", "OK"), ("Oregon", "OR"),
               ("Pennsylvania", "PA"), ("Rhode%20Island", "RI"), ("South%20Carolina", "SC"),
               ("South%20Dakota", "SD"), ("Tennessee", "TN"), ("Texas", "TX"), ("Utah", "UT"),
               ("Vermont", "VT"), ("Virginia", "VA"), ("West%20Virginia", "WV"), ("Wisconsin", "WI"),
-              ("Wyoming", "WY"), ("GET_ALL_RELEV", "ALL_RELEV")]
+              ("Wyoming", "WY"), ("GET_ALL_RELEV", "ALL_RELEV"), (None, "USA")]
 
     for state, abrv in states:
         get_state_results([d for d in dates if (int(d[:6]) > 202007 and int(d[:4]) < 2021)] + ["20210101010101"],
-                          state, abrv)
+                            state, abrv)
 
     # MISSING DATA FOR SOME MONTHS
     # list of urls with errors is available in skipped-articles.txt
-
     # Washington - did not collect articles due to validity concerns
     
 

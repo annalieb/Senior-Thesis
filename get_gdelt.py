@@ -61,7 +61,7 @@ def make_url(state, start, end, maxn=250):
            "&sort=HybridRel"
            f"&startdatetime={start}&enddatetime={end}"
            f"&mode=artlist&maxrecords={maxn}&format=json")
-    if state is None:
+    if state is "USA":
         url = ("https://api.gdeltproject.org/api/v2/doc/doc?"
            f"query=school"
            "%20sourcecountry:us%20sourcelang:english"

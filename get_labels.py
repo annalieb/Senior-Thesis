@@ -149,8 +149,8 @@ def get_gpt_labels_from_ind(start_ind, title_list):
         pred = get_one_actor(t).content
         # print(pred, t) # uncomment for verbose version (see every headline and label)
         generated_rows.append([t, pred]) # title, gpt_label
-        if i % 50 == 0:
-            print("processed 50 headlines, writing to file.")
+        if i % 25 == 0:
+            print("processed 25 headlines, writing to file.")
             with open("GPT_label_results/GPT_actors.csv", 'a', newline='\n') as f:
                 writer = csv.writer(f)
                 writer.writerows(generated_rows)
@@ -161,8 +161,6 @@ def main():
     # read in test data
     val = pd.read_csv("coding/complete_consensus_coding.csv")
     all_data = pd.read_csv("all_relevant.csv")
-
-    # get_many_labels costs about $0.28 for 139 headlines
 
     # get actor labels for validation dataset
     # get_many_labels(val, "actor")
@@ -176,7 +174,7 @@ def main():
     # get headline stance labels for validation dataset
     # get_many_labels(val, "headline stance")
 
-    get_gpt_labels_from_ind(3238, all_data['title'])
+    get_gpt_labels_from_ind(7219, all_data['title'])
 
 
 main()

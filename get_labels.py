@@ -174,7 +174,7 @@ def main():
     # get headline stance labels for validation dataset
     # get_many_labels(val, "headline stance")
 
-    get_gpt_labels_from_ind(7219, all_data['title'])
+    get_gpt_labels_from_ind(8020, all_data['title'])
 
 
 main()

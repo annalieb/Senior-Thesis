@@ -41,6 +41,17 @@ def update_df(df, headline_pairs):
         col = p[1] + "_count"
         # increment count by 1
         df.loc[df.title == headline, col] += 1
+
+def remove_false_positives(all_relevant): 
+    # irrelevant cluster #: 17, 21, 80, 82
+    clusters = pd.read_csv("cluster_results.csv")
+    print(clusters.shape)
+    irr = clusters.loc[clusters['cluster_label'].isin([17, 21, 80, 82])]
+    print(irr.shape)
+    print(all_relevant.shape)
+    truly_all_relevant = all_relevant.loc[~all_relevant['title'].isin(irr["sentence"])]
+    print(truly_all_relevant.shape)
+    return truly_all_relevant
     
 def main():
     folder = "relevant_results"
@@ -82,22 +93,9 @@ def main():
             pairs = zip(df['title'], [code] * df.shape[0])
             update_df(all_relevant_df, pairs)
             
+    all_relevant_df = remove_false_positives(all_relevant_df)
     display(all_relevant_df)
-    all_relevant_df.to_csv("all_relevant.csv", index=False)
-            
-# main()
-    
-def remove_false_positives(): 
-    # irrelevant cluster #: 17, 21, 80, 82
-    clusters = pd.read_csv("cluster_results.csv")
-    print(clusters.shape)
-    irr = clusters.loc[clusters['cluster_label'].isin([17, 21, 80, 82])]
-    print(irr.shape)
-    
-    all_relevant = pd.read_csv("all_relevant.csv")
-    print(all_relevant.shape)
-    truly_all_relevant = all_relevant.loc[~all_relevant['title'].isin(irr["sentence"])]
-    print(truly_all_relevant.shape)
-    truly_all_relevant.to_csv("all_relevant.csv")
 
-# remove_false_positives()
+    all_relevant_df.to_csv("all_relevant_with_2020.csv", index=False)
+            
+main()

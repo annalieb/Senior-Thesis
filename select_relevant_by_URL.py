@@ -67,7 +67,7 @@ def main():
             
     display(all_relevant_df)
     # write to CSV
-    all_relevant_df.to_csv("all_relevant_by_URL_with_2020.csv", index=False)
+    all_relevant_df.to_csv("all_relevant_by_URL_with_2020.csv", index=False, date_format='%Y%m%dT%H%M%SZ')
 
             
 main()

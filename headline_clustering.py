@@ -20,19 +20,12 @@ def get_sentence_embeddings(fName, model):
 
     return embeddings, headline_list
 
-
 def main():
     model = SentenceTransformer('all-MiniLM-L6-v2')
     embeddings, sentences = get_sentence_embeddings("all_relevant.csv", model)
     kmeans = KMeans(n_clusters=100, random_state=0, n_init="auto")
     kmeans.fit(embeddings)
-    labels = kmeans.labels_
     centroids = kmeans.cluster_centers_
-
-    # write cluster results to file
-    clusters_df = pd.DataFrame({"sentence": sentences, 
-                                "cluster_label": labels})
-    clusters_df.to_csv('cluster_results.csv', index=False)
 
     # Compute cosine similarity between all embeddings and centroids
     # to find 100 closest to each centroid
@@ -48,26 +41,16 @@ def main():
                                "cluster_center": center_headlines})
     centers_df.to_csv('cluster_centers.csv', index=False)
 
+    # assign all headlines (including 2020 headlines) to clusters
+
+    # make embeddings for full dataset
+    embeddings, sentences = get_sentence_embeddings("all_relevant_with_2020.csv", model)
+    preds = kmeans.predict(embeddings)
+
+    # write cluster results to file
+    clusters_df = pd.DataFrame({"headline": sentences, 
+                                "cluster_label": preds})
+    clusters_df.to_csv('cluster_results_with_2020.csv', index=False)
+    return preds
 
 main()
-
-##def test(): 
-##    X = np.array([[1, 2], [1.2, 4.2], [1, 0],
-##                  [10, 2], [10.2, 4.2], [10, 0]])
-##    kmeans = KMeans(n_clusters=2, random_state=0, n_init="auto").fit(X)
-##    centroids = kmeans.cluster_centers_
-##    print(centroids)
-##    # centroids: [10.,  2.], [ 1.,  2.]
-##
-##    centroid_ind = []
-##    for c in centroids: 
-##        centroid_ind.append(np.where((X == c).all(axis=1)))
-##    print(centroid_ind)
-##    print(len(centroid_ind))
-##
-##    a = np.array([[0, 1, 2],
-##                  [0, 2, 4],
-##                  [0, 3, 6]])
-##    print(np.where((a == [0, 1, 2]).all(axis=1)))
-
-# test()

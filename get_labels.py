@@ -146,12 +146,12 @@ def get_many_labels(val, label_type):
 def get_gpt_labels_from_ind(start_ind, title_list): 
     generated_rows = []
     for i, t in enumerate(list(title_list)[start_ind:]): 
-        pred = get_one_actor(t).content
+        pred = get_one_stance(t).content
         # print(pred, t) # uncomment for verbose version (see every headline and label)
         generated_rows.append([t, pred]) # title, gpt_label
-        if i % 25 == 0:
-            print("processed 25 headlines, writing to file.")
-            with open("GPT_label_results/GPT_actors.csv", 'a', newline='\n') as f:
+        if i % 10 == 0:
+            print("processed 10 headlines, writing to file.")
+            with open("GPT_label_results/GPT_stances.csv", 'a', newline='\n') as f:
                 writer = csv.writer(f)
                 writer.writerows(generated_rows)
             generated_rows = []
@@ -174,7 +174,7 @@ def main():
     # get headline stance labels for validation dataset
     # get_many_labels(val, "headline stance")
 
-    get_gpt_labels_from_ind(8020, all_data['title'])
+    get_gpt_labels_from_ind(10688, all_data['title'])
 
 
 main()

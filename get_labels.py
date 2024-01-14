@@ -149,8 +149,8 @@ def get_gpt_labels_from_ind(start_ind, title_list):
         pred = get_one_stance(t).content
         # print(pred, t) # uncomment for verbose version (see every headline and label)
         generated_rows.append([t, pred]) # title, gpt_label
-        if i % 10 == 0:
-            print("processed 10 headlines, writing to file.")
+        if i % 2 == 0:
+            print("processed 2 headlines, writing to file.")
             with open("GPT_label_results/GPT_stances.csv", 'a', newline='\n') as f:
                 writer = csv.writer(f)
                 writer.writerows(generated_rows)
@@ -174,7 +174,7 @@ def main():
     # get headline stance labels for validation dataset
     # get_many_labels(val, "headline stance")
 
-    get_gpt_labels_from_ind(10688, all_data['title'])
+    get_gpt_labels_from_ind(11421, all_data['title'])
 
 
 main()

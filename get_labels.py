@@ -161,6 +161,7 @@ def main():
     # read in test data
     val = pd.read_csv("coding/complete_consensus_coding.csv")
     all_data = pd.read_csv("all_relevant.csv")
+    print(all_data.shape)
 
     # get actor labels for validation dataset
     # get_many_labels(val, "actor")
@@ -174,8 +175,7 @@ def main():
     # get headline stance labels for validation dataset
     # get_many_labels(val, "headline stance")
 
-    get_gpt_labels_from_ind(11421, all_data['title'])
+    get_gpt_labels_from_ind(0, all_data['title']) 
 
 
 main()
-

@@ -22,9 +22,8 @@ def get_unique(folder):
     
     title_counter = Counter(all_titles)
     unique_titles = title_counter.keys()
-    total_counts = title_counter.values()
     
-    return unique_titles, total_counts, metadata
+    return unique_titles, metadata
 
 def get_relevant_titles(state_f):
     '''Given a state file, reads the file and returns a dataframe
@@ -46,7 +45,7 @@ def main():
     folder = "relevant_results"
 
     # get a list of all unique headlines (these are our rows) 
-    all_unique_titles, all_total_counts, metadata = get_unique(folder)
+    all_unique_titles, metadata = get_unique(folder)
     nrows = len(all_unique_titles)
     print("total unique titles (n):", nrows)
 
@@ -54,8 +53,7 @@ def main():
     data = {'title': all_unique_titles, 
             'url': [None] * nrows,
             'seendate': [None] * nrows,
-            'domain': [None] * nrows,
-            'total_repeats': all_total_counts,}
+            'domain': [None] * nrows,}
     
     count_cols = [s[0:s.find("_l")]+"_count" for s in os.listdir(folder)]
     for c in count_cols:
@@ -81,9 +79,10 @@ def main():
             code = f[0:f.find("_l")]
             pairs = zip(df['title'], [code] * df.shape[0])
             update_df(all_relevant_df, pairs)
-            
+
+    all_relevant_df = all_relevant_df.sort_values(by=['seendate', 'title'])
     display(all_relevant_df)
 
-    all_relevant_df.to_csv("all_relevant_with_2020.csv", index=False)
+    all_relevant_df.to_csv("all_relevant.csv", index=False)
             
 main()

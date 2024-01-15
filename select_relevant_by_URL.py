@@ -23,9 +23,8 @@ def get_unique(folder):
     
     url_counter = Counter(all_URLs)
     unique_urls = url_counter.keys()
-    total_urls = url_counter.values()
     
-    return unique_urls, total_urls, metadata
+    return unique_urls, metadata
 
 def get_relevant_titles(state_f):
     '''Given a state file, reads the file and returns a dataframe
@@ -38,7 +37,7 @@ def main():
     folder = "relevant_results"
 
     # get a list of all unique URLs (these are our rows) 
-    all_unique_urls, all_total_urls, metadata = get_unique(folder)
+    all_unique_urls, metadata = get_unique(folder)
     nrows = len(all_unique_urls)
     print("total unique URLs (n):", nrows)
 
@@ -46,8 +45,7 @@ def main():
     data = {'title': [None] * nrows, 
             'url': all_unique_urls,
             'seendate': [None] * nrows,
-            'domain': [None] * nrows,
-            'total_repeats': all_total_urls}
+            'domain': [None] * nrows}
         
     print("columns:", data.keys())
 
@@ -63,11 +61,12 @@ def main():
     # convert the date string into datetime object
     all_relevant_df['seendate'] = all_relevant_df['seendate'].apply(lambda x:
                                                                     datetime.strptime(x, '%Y%m%dT%H%M%SZ'))
-    all_relevant_df = all_relevant_df.sort_values(by=['seendate', 'title'])
-            
+    
+    all_relevant_df = all_relevant_df.sort_values(by=['seendate', 'title'])     
     display(all_relevant_df)
+    
     # write to CSV
-    all_relevant_df.to_csv("all_relevant_by_URL_with_2020.csv", index=False, date_format='%Y%m%dT%H%M%SZ')
+    all_relevant_df.to_csv("all_relevant_by_URL.csv", index=False, date_format='%Y%m%dT%H%M%SZ')
 
             
 main()

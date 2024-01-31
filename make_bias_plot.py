@@ -63,14 +63,14 @@ def plot_bias(interval, metric):
     print(interval)
     means = avg_by_date("matched_bias_scores.csv", metric, interval)
     labels = {"date": "Date",
-              "relevant": "Average partisan audience bias score"}
+              "score": "Median partisan audience bias score"}
     fig = px.line(means, x='date', y='score', labels=labels, 
                   title=f"{metric} Partisan Audience Bias score (monthly)")
     fig.show()
 
 def main():
     plot_bias("monthly", "median")
-    plot_bias("monthly", "mean")
+    # plot_bias("monthly", "mean")
     # could also do another plot with two lines: 
     # "liberal" (score < 0) and "conservative" (score > 0) sources
     

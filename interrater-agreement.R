@@ -6,14 +6,13 @@
 
 library("irr")
 
-setwd("/Users/annalieb/Documents/Thesis/Senior-Thesis")
+setwd("/Users/annalieb/Documents/Thesis/Harvard-dataverse-repo.nosync")
 
 ############ Read in coding files with labels ############
-r1 <- read.csv("coding/complete_Anna_coding.csv",header=TRUE)
-r2 <- read.csv("coding/complete_Ariel_coding.csv",header=TRUE)
-r3 <- read.csv("coding/complete_Tarishi_coding.csv",header=TRUE)
-gpt <- read.csv("coding/complete_GPT_coding.csv",header=TRUE)
-consensus <- read.csv("coding/complete_consensus_coding.csv", header=TRUE)
+r1 <- read.csv("other_data/coding/r1_coding.csv",header=TRUE)
+r2 <- read.csv("other_data/coding/r2_coding.csv",header=TRUE)
+gpt <- read.csv("other_data/coding/GPT_coding.csv",header=TRUE)
+consensus <- read.csv("other_data/coding/consensus_coding.csv", header=TRUE)
 
 clean_labels <- function(df) {
   # remove rows that are not relevant: 32, 38, 39, 50, 68, 72, 131, 133
@@ -32,9 +31,8 @@ clean_labels <- function(df) {
 
 r1 <- clean_labels(r1)
 r2 <- clean_labels(r2)
-r3 <- clean_labels(r3)
 
-sum(r1$Title != gpt$Title & r2$Title != gpt$Title & r3$Title != gpt$Title)
+sum(r1$Title != gpt$Title & r2$Title != gpt$Title)
 
 convert_labels <- function(df) {
   df$actor[df$actor == "educational practitioners"] <- 0
@@ -82,7 +80,6 @@ convert_gpt_labels <- function(df) {
 
 r1 <- convert_labels(r1)
 r2 <- convert_labels(r2)
-r3 <- convert_labels(r3)
 consensus <- convert_labels(consensus)
 gpt <- convert_gpt_labels(gpt)
 
@@ -90,7 +87,6 @@ gpt <- convert_gpt_labels(gpt)
 col_names <- names(r1)[2:5]
 r1[col_names] <- lapply(r1[col_names], factor)
 r2[col_names] <- lapply(r2[col_names], factor)
-r3[col_names] <- lapply(r3[col_names], factor)
 gpt[col_names] <- lapply(gpt[col_names], factor)
 consensus[col_names] <- lapply(consensus[col_names], factor)
 
@@ -106,33 +102,33 @@ consensus[col_names] <- lapply(consensus[col_names], factor)
 # coder pairs using statistical software then manually computing the arithmetic mean.
 
 # actors alpha: 0.672
-actors <- cbind(r1$actor, r3$actor)
-actors_alpha <- kappam.fleiss(actors)
+actors <- cbind(r1$actor, r2$actor)
+actors_alpha <- kappa2(actors)
 actors_alpha
 
-# with gpt: 0.694 
-actors <- cbind(r1$actor, r3$actor, gpt$actor)
-actors_alpha <- kappam.fleiss(actors)
+# with gpt: 0.751 
+actors <- cbind(consensus$actor, gpt$actor)
+actors_alpha <- kappa2(actors)
 actors_alpha
 
 # action alpha: 0.609
-kappa2(cbind(r1$action, r3$action))
+kappa2(cbind(r1$action, r2$action))
 
-# with gpt: 0.481
-action <- cbind(r1$action, r3$action, gpt$action)
+# with gpt
+action <- cbind(consensus$action, gpt$action)
 action_alpha <- kappam.fleiss(action)
 action_alpha
 
 # action direction: 0.681 
-kappa2(cbind(r1$action.direction, r3$action.direction))
+kappa2(cbind(r1$action.direction, r2$action.direction))
 # with gpt: 0.633
-a1 <- kappa2(cbind(r1$action.direction, r3$action.direction))$value
+a1 <- kappa2(cbind(r1$action.direction, r2$action.direction))$value
 a2 <- kappa2(cbind(r1$action.direction, gpt$action.direction))$value
-a3 <- kappa2(cbind(gpt$action.direction, r3$action.direction))$value
+a3 <- kappa2(cbind(gpt$action.direction, r2$action.direction))$value
 mean(c(a1, a2, a3))
 
 # headline stance: 0.742 
-kappa2(cbind(r1$headline.stance, r3$headline.stance))
+kappa2(cbind(r1$headline.stance, r2$headline.stance))
 # with gpt: 0.662
 a1 <- kappa2(cbind(r1$headline.stance, r3$headline.stance))$value
 a2 <- kappa2(cbind(r1$headline.stance, gpt$headline.stance))$value

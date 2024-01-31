@@ -53,21 +53,21 @@ def make_url(state, start, end, maxn=250):
            "%20sourcecountry:us%20sourcelang:english"
            "&sort=HybridRel"
            f"&startdatetime={start}&enddatetime={end}"
-           f"&mode=artlist&maxrecords={maxn}&format=json")
+           f"&mode=artlist&maxrecords=100&format=json")
     if state == "GET_ALL_RELEV":
         url = ("https://api.gdeltproject.org/api/v2/doc/doc?"
            f"query=(%22critical%20race%20theory%22%20OR%20crt)"
            "%20sourcecountry:us%20sourcelang:english"
            "&sort=HybridRel"
            f"&startdatetime={start}&enddatetime={end}"
-           f"&mode=artlist&maxrecords={maxn}&format=json")
+           f"&mode=artlist&maxrecords=250&format=json")
     if state is "USA":
         url = ("https://api.gdeltproject.org/api/v2/doc/doc?"
            f"query=school"
            "%20sourcecountry:us%20sourcelang:english"
            "&sort=HybridRel"
            f"&startdatetime={start}&enddatetime={end}"
-           f"&mode=artlist&maxrecords={maxn}&format=json")
+           f"&mode=artlist&maxrecords=250&format=json")
     return url
 
 def write_results(results, outFName):

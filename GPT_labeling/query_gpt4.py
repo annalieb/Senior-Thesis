@@ -43,7 +43,7 @@ def single_query(messages,stop="\n\n",maxTokens=128):
         print(f"Failed to connect to OpenAI API: {e}")
         pass
     except openai.RateLimitError as e:
-        # this shouldn't ever happen
+        # this shouldn't ever happen if exponential backoff is being used 
         print("Uh oh... exponential backoff isn't working")
         print(f"OpenAI API request exceeded rate limit: {e}")
         pass

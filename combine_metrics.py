@@ -91,7 +91,7 @@ def main():
     relevant_results = relevant_results.loc[:,col_order]
 
     # write output to csv
-    relevant_results.to_csv("coverage_by_unique_headline.csv", index=False)
+    relevant_results.to_excel("coverage_by_unique_headline.xlsx", index=False)
 
     ######### REPEAT FOR URL DATA #########
 

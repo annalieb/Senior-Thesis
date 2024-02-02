@@ -264,7 +264,7 @@ def main():
     # get_many_labels(val, "actor", "all_actor", "baseline_approach/n=4/actor_preds.csv")
 
     # get headline stance labels for validation dataset
-    get_many_labels(val, "headline stance", "uncontested_stance", "baseline_approach/n=2_uncontested/stance_preds.csv")
+    # get_many_labels(val, "headline stance", "uncontested_stance", "baseline_approach/n=2_uncontested/stance_preds.csv")
     # get_many_labels(val, "headline stance", "contested_stance", "baseline_approach/n=2_contested/stance_preds.csv")
     # get_many_labels(val, "headline stance", "all_stance", "baseline_approach/n=4/stance_preds.csv")
     

@@ -3,6 +3,9 @@ import pandas as pd
 import datetime
 from IPython.display import display
 import plotly.express as px
+import scipy
+
+from scipy import signal
 
 def get_daily(raw_dates):
     '''Convert a list of raw dates to datetime dates
@@ -57,14 +60,19 @@ def avg_by_date(inFile, interval="daily"):
     means = means.reset_index()
     return means
 
-def plot_relevance(states_list, interval="daily"):
+def plot_relevance(states_list, interval="daily", filter=False):
     print(interval)
     first_s = states_list[0]
     means = avg_by_date(f"relevant_results/{first_s}_labeled.csv",
                                    interval)
     labels = {"date": "Date",
               "relevant": "Relevance (proportion of state coverage)"}
-    fig = px.line(means, x='date', y='relevant', labels=labels)
+    if filter: 
+        fig = px.line(means, x='date', y=signal.savgol_filter(means['relevant'],
+                                                          53, # window size used for filtering
+                                                          5)) # order of fitted polynomial'relevant', labels=labels)
+    else: 
+        fig = px.line(means, x='date', y='relevant') # order of fitted polynomial'relevant', labels=labels)
     fig.data[0].name=first_s
     fig.update_traces(showlegend=True)
     
@@ -76,10 +84,18 @@ def plot_relevance(states_list, interval="daily"):
         if max(means['relevant'][trimester*2: trimester*3] > 0.04):
             print(f"Warning: {s} has high coverage {means['date'][trimester*2]} through {means['date'][trimester*3]}")
             print(f"max:{max(means['relevant'][trimester*2:(trimester*3)])}")
-        fig.add_scatter(x=means['date'],
-                        y=means['relevant'],
-                        mode='lines',
-                        name=s)
+        if filter: 
+            fig.add_scatter(x=means['date'],
+                            y=signal.savgol_filter(means['relevant'],
+                                                   53, # window size used for filtering
+                                                   5),
+                            mode='lines',
+                            name=s)
+        else: 
+            fig.add_scatter(x=means['date'],
+                            y=means['relevant'],
+                            mode='lines',
+                            name=s)
     fig.show()
 
 def main():
@@ -93,7 +109,10 @@ def main():
     #                 "OR", "PA", "SC", "RI", "SD", "TN", "TX", "UT", "VT",
     #                 "VA", "WV", "WI", "WY"],
     #                "bimonthly")
-    plot_relevance(["FL", "OK", "TX", "VA", "USA"], "bimonthly")
+    # plot_relevance(["FL", "OK", "TX", "VA", "USA"], "bimonthly")
+    plot_relevance(["USA", "USA_woke", "USA_covid", "USA_trans"], "bimonthly", False)
+    plot_relevance(["USA", "USA_woke", "USA_covid", "USA_trans"], "daily", True)
+    plot_relevance(["FL", "FL_woke", "FL_covid", "FL_trans"], "bimonthly", False)
 
     
 

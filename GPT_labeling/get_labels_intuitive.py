@@ -16,7 +16,194 @@ def get_gpt_response(prompt):
         print("GPT finish reason:", response.choices[0].finish_reason)
     return completion
 
-def get_one_actor(headline): 
+def get_examples(example_type):
+    if example_type == "uncontested_actor": 
+        return '''Here are some examples of correct classification responses. 
+        
+        The headline: "Teachers Unions Push CRT in Schools"
+        The actor of the headline: <EDUCATIONAL PRACTITIONER>
+
+        The headline: "No new teachers in Glen Ellyn sign pledge on Oct . 19 to teach Critical Race Theory"
+        The actor of the headline: <EDUCATIONAL PRACTITIONER>
+
+        The headline: "Critical Race Theory Is a Potent Issue in the Virginia Governor Race"
+        The actor of the headline: <POLITICAL INFLUENCER>
+
+        The headline: "Wisconsin assembly passes bill banning critical race theory in the Classroom"
+        The actor of the headline: <POLITICAL INFLUENCER>
+
+        The headline: "WATCH : Parents , Activists Protest CRT at Texas School Board Meeting"
+        The actor of the headline: <IMPACTED ACTOR>
+
+        The headline: "Local Parents Speak Out Against Critical Race Theory | News Radio 101 . 9 Big WAAX"
+        The actor of the headline: <IMPACTED ACTOR>
+
+        The headline: "What Is Critical Race Theory Anyway ?"
+        The actor of the headline: <NONE/OTHER>
+
+        The headline: "COMMENTARY : The truth about CRT"
+        The actor of the headline: <NONE/OTHER>'''
+    elif example_type == "contested_actor": 
+        return '''Here are some examples of correct classification responses. 
+        
+        The headline: "Department of Education wisely retreats from critical race theory"
+        The actor of the headline: <EDUCATIONAL PRACTITIONER>
+
+        The headline: "Racist CRT Lessons in Public School Classrooms"
+        The actor of the headline: <EDUCATIONAL PRACTITIONER>
+
+        The headline: "CRT is dividing Democrats and rallying Republicans"
+        The actor of the headline: <POLITICAL INFLUENCER>
+
+        The headline: "UCLA database reveals well - funded push for critical race theory , argues Cornell law professor"
+        The actor of the headline: <POLITICAL INFLUENCER>
+
+        The headline: "Critical Race Theory Aims to Turn Students Into  Red Guards , Chinese American Warns By Terri Wu"
+        The actor of the headline: <IMPACTED ACTOR>
+
+        The headline: "Fears about CRT , masks turned local races into battlegrounds"
+        The actor of the headline: <IMPACTED ACTOR>
+
+        The headline: "Critical race theory : The education trap"
+        The actor of the headline: <NONE/OTHER>
+
+        The headline: "Critical Race Theory : What Christians Need to Know"
+        The actor of the headline: <NONE/OTHER> '''
+    elif example_type == "all_actor": 
+        return '''Here are some examples of correct classification responses. 
+        
+        The headline: "Teachers Unions Push CRT in Schools"
+        The actor of the headline: <EDUCATIONAL PRACTITIONER>
+
+        The headline: "No new teachers in Glen Ellyn sign pledge on Oct . 19 to teach Critical Race Theory"
+        The actor of the headline: <EDUCATIONAL PRACTITIONER>
+
+        The headline: "Department of Education wisely retreats from critical race theory"
+        The actor of the headline: <EDUCATIONAL PRACTITIONER>
+
+        The headline: "Racist CRT Lessons in Public School Classrooms"
+        The actor of the headline: <EDUCATIONAL PRACTITIONER>
+
+        The headline: "Critical Race Theory Is a Potent Issue in the Virginia Governor Race"
+        The actor of the headline: <POLITICAL INFLUENCER>
+
+        The headline: "Wisconsin assembly passes bill banning critical race theory in the classroom"
+        The actor of the headline: <POLITICAL INFLUENCER>
+
+        The headline: "CRT is dividing Democrats and rallying Republicans"
+        The actor of the headline: <POLITICAL INFLUENCER>
+
+        The headline: "UCLA database reveals well - funded push for critical race theory , argues Cornell law professor"
+        The actor of the headline: <POLITICAL INFLUENCER>
+
+        The headline: "WATCH : Parents , Activists Protest CRT at Texas School Board Meeting"
+        The actor of the headline: <IMPACTED ACTOR>
+
+        The headline: "Local Parents Speak Out Against Critical Race Theory | News Radio 101 . 9 Big WAAX"
+        The actor of the headline: <IMPACTED ACTOR>
+
+        The headline: "Critical Race Theory Aims to Turn Students Into  Red Guards , Chinese American Warns By Terri Wu"
+        The actor of the headline: <IMPACTED ACTOR>
+
+        The headline: "Fears about CRT , masks turned local races into battlegrounds"
+        The actor of the headline: <IMPACTED ACTOR>
+
+        The headline: "What Is Critical Race Theory Anyway ?"
+        The actor of the headline: <NONE/OTHER>
+
+        The headline: "COMMENTARY : The truth about CRT"
+        The actor of the headline: <NONE/OTHER>
+        
+        The headline: "Critical race theory : The education trap"
+        The actor of the headline: <NONE/OTHER>
+
+        The headline: "Critical Race Theory : What Christians Need to Know"
+        The actor of the headline: <NONE/OTHER>'''
+    
+    elif example_type == "uncontested_stance": 
+        return '''Here are some examples of correct classification responses. 
+        
+        The headline: "Ted Cruz Says Critical Race Theory Is  Every Bit As Racist As The Klansmen In White Sheets"
+        The stance of the headline: <ANTI-CRT>
+
+        The headline: "The Left Assault on  Racist  Math Continues : DeSantis Rejects CRT - Riddled Textbooks"
+        The stance of the headline: <ANTI-CRT>
+
+        The headline: "The librarians uniting to battle school book ban laws"
+        The stance of the headline: <DEFENDING CRT>
+
+        The headline: "Guest commentary : Legislation on critical race theory isn't a good idea"
+        The stance of the headline: <DEFENDING CRT>
+
+        The headline: "Where Are Black Parent Voices on Critical Race Theory ?"
+        The stance of the headline: <NEUTRAL>
+
+        The headline: "Critical race theory bill gets first vote from Kentucky lawmakers"
+        The stance of the headline: <NEUTRAL>'''
+    
+    elif example_type == "contested_stance": 
+        return '''Here are some examples of correct classification responses. 
+        
+        The headline: "GOP : The Fight Against Critical Race Theory Has Only Just Begun"
+        The stance of the headline: <ANTI-CRT>
+
+        The headline: "CURRICULUM CONTROVERSY : District responds to claims it will implement CRT , gender identity lessons"
+        The stance of the headline: <ANTI-CRT>
+
+        The headline: "Demonizing Critical Race Theory | History News Network"
+        The stance of the headline: <DEFENDING CRT>
+
+        The headline: "Biden signs Emmett Till Antilynching Act as CRT bans restrict talk of race"
+        The stance of the headline: <DEFENDING CRT>
+
+        The headline: "Critical Race Theory is Being Taught , and Has Been for Years , Tucker Carlson Highlights"
+        The stance of the headline: <NEUTRAL>
+
+        The headline: "General Milley is clueless on critical race theory"
+        The stance of the headline: <NEUTRAL>'''
+    
+    elif example_type == "all_stance": 
+        return '''Here are some examples of correct classification responses. 
+        
+        The headline: "Ted Cruz Says Critical Race Theory Is  Every Bit As Racist As The Klansmen In White Sheets"
+        The stance of the headline: <ANTI-CRT>
+
+        The headline: "The Left Assault on  Racist  Math Continues : DeSantis Rejects CRT - Riddled Textbooks"
+        The stance of the headline: <ANTI-CRT>
+
+        The headline: "GOP : The Fight Against Critical Race Theory Has Only Just Begun"
+        The stance of the headline: <ANTI-CRT>
+
+        The headline: "CURRICULUM CONTROVERSY : District responds to claims it will implement CRT , gender identity lessons"
+        The stance of the headline: <ANTI-CRT>
+
+        The headline: "The librarians uniting to battle school book ban laws"
+        The stance of the headline: <DEFENDING CRT>
+
+        The headline: "Guest commentary : Legislation on critical race theory isn't a good idea"
+        The stance of the headline: <DEFENDING CRT>
+
+        The headline: "Demonizing Critical Race Theory | History News Network"
+        The stance of the headline: <DEFENDING CRT>
+
+        The headline: "Biden signs Emmett Till Antilynching Act as CRT bans restrict talk of race"
+        The stance of the headline: <DEFENDING CRT>
+
+        The headline: "Where Are Black Parent Voices on Critical Race Theory ?"
+        The stance of the headline: <NEUTRAL>
+
+        The headline: "Critical race theory bill gets first vote from Kentucky lawmakers"
+        The stance of the headline: <NEUTRAL>
+        
+        The headline: "Critical Race Theory is Being Taught , and Has Been for Years , Tucker Carlson Highlights"
+        The stance of the headline: <NEUTRAL>
+
+        The headline: "General Milley is clueless on critical race theory"
+        The stance of the headline: <NEUTRAL>'''
+    else: 
+        return None
+
+def get_one_actor(headline, examples): 
     actor_prompt = f'''News article headlines can shape the ways that people perceive current events and understand the world around them. Therefore, nuances in the headline's language and word choice can be very important. The goal of this task is to identify the main actor (ie. a person or organization) in a news headline. 
     
     You will be given a news headline related to critical race theory (CRT). Your response should identify the main actor in the headline. Your response must be one of the following predefined labels: <EDUCATIONAL PRACTITIONER>, <POLITICAL INFLUENCER>, <IMPACTED ACTOR>, or <NONE/OTHER>. 
@@ -28,6 +215,7 @@ def get_one_actor(headline):
     <NONE/OTHER> - There is no actor in the headline, or the main actor does not fit any of the other categories above.
 
     Your interpretations of the headline should be guided by the main ideas that stand out in the headline. Consider that the headline might belong to one of the categories implicitly, without direct reference to exact words provided in the label definition.
+     {examples}
 
     Please consider the following headline: "{headline}"
     What is the main actor in this headline? Please respond with exactly one of the following predefined labels that best describes the main actor in this headline: <EDUCATIONAL PRACTITIONER>, <POLITICAL INFLUENCER>, <IMPACTED ACTOR>, or <NONE/OTHER>. '''
@@ -39,56 +227,57 @@ def get_one_actor(headline):
     completion = get_gpt_response(message)
     return completion
 
-def get_one_action(headline): 
-    action_prompt = f'''News article headlines can shape the ways that people perceive current events and understand the world around them. Therefore, nuances in the headline's language and word choice can be very important. The goal of this task is to identify the main action taking place in a news headline. 
+# def get_one_action(headline, examples): 
+#     action_prompt = f'''News article headlines can shape the ways that people perceive current events and understand the world around them. Therefore, nuances in the headline's language and word choice can be very important. The goal of this task is to identify the main action taking place in a news headline. 
 
-    You will be given a news headline related to critical race theory (CRT). Your response should identify the main action in the headline. Your response must be one of the following predefined labels: <PROTEST / SPEAKING OUT>, <POLICY / LEGAL / ELECTIONS>, <THREATS / EXTENT>, or <NONE/OTHER>. 
+#     You will be given a news headline related to critical race theory (CRT). Your response should identify the main action in the headline. Your response must be one of the following predefined labels: <PROTEST / SPEAKING OUT>, <POLICY / LEGAL / ELECTIONS>, <THREATS / EXTENT>, or <NONE/OTHER>. 
 
-    Please carefully consider the following label definitions: 
-    <PROTEST / SPEAKING OUT> - The primary action in the headline involves an act of protest or speaking out. Some examples include people voicing concerns, protesting, public demonstrations, and debate at public meetings
-    <POLICY / LEGAL / ELECTIONS> - The primary action in the headline involves policies, legal action, or an election. Some examples include imposing bans, passing legislation, implementing a school/district/state policy, filing a lawsuit, school curriculum policy, elections, campaigns, and voting. 
-    <THREATS / EXTENT> - The primary action in the headline involves CRT posing a threat or the extent of CRT itself. Some examples may include teaching CRT, learning CRT, spread of CRT in schools, influencing the quality of education, posing a cultural/social/moral threat, and limiting personal rights or civil liberties. 
-    <NONE/OTHER> - There is no clear action taking place in the headline, or the main action in the headline does not fit any of the other categories above.
+#     Please carefully consider the following label definitions: 
+#     <PROTEST / SPEAKING OUT> - The primary action in the headline involves an act of protest or speaking out. Some examples include people voicing concerns, protesting, public demonstrations, and debate at public meetings
+#     <POLICY / LEGAL / ELECTIONS> - The primary action in the headline involves policies, legal action, or an election. Some examples include imposing bans, passing legislation, implementing a school/district/state policy, filing a lawsuit, school curriculum policy, elections, campaigns, and voting. 
+#     <THREATS / EXTENT> - The primary action in the headline involves CRT posing a threat or the extent of CRT itself. Some examples may include teaching CRT, learning CRT, spread of CRT in schools, influencing the quality of education, posing a cultural/social/moral threat, and limiting personal rights or civil liberties. 
+#     <NONE/OTHER> - There is no clear action taking place in the headline, or the main action in the headline does not fit any of the other categories above.
 
-    Your interpretations of the headline should be guided by the main ideas that stand out in the headline. Consider that the headline might belong to one of the categories implicitly, without direct reference to exact words provided in the label definition.
+#     Your interpretations of the headline should be guided by the main ideas that stand out in the headline. Consider that the headline might belong to one of the categories implicitly, without direct reference to exact words provided in the label definition.
+#      {examples}
 
-    Please consider the following headline: "{headline}"
-    What is the main action in this headline? Please respond with exactly one of the following predefined labels that best describes the main action in this headline: <PROTEST / SPEAKING OUT>, <POLICY / LEGAL / ELECTIONS>, <THREATS / EXTENT>, or <NONE/OTHER>. 
-    '''
+#     Please consider the following headline: "{headline}"
+#     What is the main action in this headline? Please respond with exactly one of the following predefined labels that best describes the main action in this headline: <PROTEST / SPEAKING OUT>, <POLICY / LEGAL / ELECTIONS>, <THREATS / EXTENT>, or <NONE/OTHER>. 
+#     '''
 
-    message = [
-        {"role": "user", "content": action_prompt}
-    ]
+#     message = [
+#         {"role": "user", "content": action_prompt}
+#     ]
 
-    completion = get_gpt_response(message)
-    return completion
+#     completion = get_gpt_response(message)
+#     return completion
 
-def get_one_action_direction(headline): 
-    action_direction_prompt = f'''News article headlines can shape the ways that people perceive current events and understand the world around them. Therefore, nuances in the headline's language and word choice can be very important. The goal of this task is to identify the impact of an action or event taking place in a news headline. 
+# def get_one_action_direction(headline): 
+#     action_direction_prompt = f'''News article headlines can shape the ways that people perceive current events and understand the world around them. Therefore, nuances in the headline's language and word choice can be very important. The goal of this task is to identify the impact of an action or event taking place in a news headline. 
 
-    You will be given a news headline related to critical race theory (CRT). Your response should identify the action direction in the headline. Your response must be one of the following predefined labels: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
+#     You will be given a news headline related to critical race theory (CRT). Your response should identify the action direction in the headline. Your response must be one of the following predefined labels: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
 
-    Please carefully consider the following label definitions: 
-    <ANTI-CRT> - The headline reports on anti-CRT actions that restrict teaching CRT, actions taken to speak out against CRT, or any other anti-CRT actions taken to counter CRT. 
-    <DEFENDING CRT> - The headline reports on actions that defend teaching CRT, actions taken to speak out in support of CRT, or any other actions taken to counter anti-CRT efforts.
-    <NEUTRAL> - The headline does not clearly identify an action, or the action does not make change in either direction (neither for or against CRT). 
+#     Please carefully consider the following label definitions: 
+#     <ANTI-CRT> - The headline reports on anti-CRT actions that restrict teaching CRT, actions taken to speak out against CRT, or any other anti-CRT actions taken to counter CRT. 
+#     <DEFENDING CRT> - The headline reports on actions that defend teaching CRT, actions taken to speak out in support of CRT, or any other actions taken to counter anti-CRT efforts.
+#     <NEUTRAL> - The headline does not clearly identify an action, or the action does not make change in either direction (neither for or against CRT). 
 
-    Note that the impact of the event in the headline is different from the headline stance or bias. For example, consider the following headline: "Florida bans critical race theory from classrooms." For this headline, the headline stance is neutral because the headline does not reveal a strong journalistic bias for or against CRT. However, the action taking place has an anti-CRT impact because the ban would prevent teaching CRT in classrooms. Therefore, this headline stance would have the <ANTI-CRT> label.
+#     Note that the impact of the event in the headline is different from the headline stance or bias. For example, consider the following headline: "Florida bans critical race theory from classrooms." For this headline, the headline stance is neutral because the headline does not reveal a strong journalistic bias for or against CRT. However, the action taking place has an anti-CRT impact because the ban would prevent teaching CRT in classrooms. Therefore, this headline stance would have the <ANTI-CRT> label.
 
-    Your interpretations of the headline should be guided by the main actions or events that stand out in the headline. Consider that the headline action might belong to one of the categories implicitly, without direct reference to exact words or examples provided in the label definition.
+#     Your interpretations of the headline should be guided by the main actions or events that stand out in the headline. Consider that the headline action might belong to one of the categories implicitly, without direct reference to exact words or examples provided in the label definition.
 
-    Please consider the following headline: "{headline}"
-    Consider the main action taking place in the headline. What is the action's impact? Please respond with exactly one of the following predefined labels that best describes the action direction in this headline: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
-    '''
+#     Please consider the following headline: "{headline}"
+#     Consider the main action taking place in the headline. What is the action's impact? Please respond with exactly one of the following predefined labels that best describes the action direction in this headline: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
+#     '''
 
-    message = [
-        {"role": "user", "content": action_direction_prompt}
-    ]
+#     message = [
+#         {"role": "user", "content": action_direction_prompt}
+#     ]
 
-    completion = get_gpt_response(message)
-    return completion
+#     completion = get_gpt_response(message)
+#     return completion
 
-def get_one_stance(headline): 
+def get_one_stance(headline, examples): 
     action_direction_prompt = f'''News article headlines can shape the ways that people perceive current events and understand the world around them. Therefore, nuances in the headline's language and word choice can be very important. The goal of this task is to identify the stance or bias of a news headline. 
 
     You will be given a news headline related to critical race theory (CRT). Your response should identify the stance of the headline. Your response must be one of the following predefined labels: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
@@ -101,6 +290,7 @@ def get_one_stance(headline):
     Note that the impact of the event in the headline is different from the headline stance or bias. For example, consider the following headline: "Florida bans critical race theory from classrooms." For this headline, the action taking place has an anti-CRT impact because the ban would prevent teaching CRT in classrooms. However, in this case, the headline stance is neutral because the headline does not reveal a strong journalistic bias for or against CRT. Therefore, this headline stance would have the <NEUTRAL> label.
 
     Your interpretations of the headline should be guided by polarizing terms that stand out in the headline, which may indicate the headline's stance. Consider that the headline stance might belong to one of the categories implicitly, without direct reference to exact words or examples provided in the label definition.
+     {examples}
 
     Please consider the following headline: "{headline}"
     Consider any biased framing in the headline. What is the headline's stance? Please respond with exactly one of the following predefined labels that best describes the stance in this headline: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
@@ -113,24 +303,27 @@ def get_one_stance(headline):
     completion = get_gpt_response(message)
     return completion
 
-def get_many_labels(val, label_type): 
+def get_many_labels(val, label_type, example_type, outF): 
     '''params: 
     val - validation set
     label_type - one of "actor", "action", "action direction", or "headline stance"'''
     headlines = list(val['Title'])
 
+    # set examples
+    e = get_examples(example_type)
+
     # get actor labels
     preds = []
     labels = list(val[label_type])
     for h, label in zip(headlines, labels): 
-        if label_type == "action": 
-            resp = get_one_action(h)
-        elif label_type == "actor": 
-            resp = get_one_actor(h)
-        elif label_type == "action direction": 
-            resp = get_one_action_direction(h)
+        # if label_type == "action": 
+        #     resp = get_one_action(h, e)
+        if label_type == "actor": 
+            resp = get_one_actor(h, e)
+        # elif label_type == "action direction": 
+        #     resp = get_one_action_direction(h)
         elif label_type == "headline stance": 
-            resp = get_one_stance(h)
+            resp = get_one_stance(h, e)
         else: 
             print(f"ERROR: no label_type {label_type}")
             return None
@@ -141,7 +334,7 @@ def get_many_labels(val, label_type):
         print(f"actual: {label}")
 
     val.insert(2, f"{label_type}_pred", preds)
-    val.to_csv("GPT_label_results/actor_35_preds.csv")
+    val.to_csv(outF)
 
 def get_gpt_labels_from_ind(start_ind, title_list): 
     generated_rows = []
@@ -160,22 +353,26 @@ def get_gpt_labels_from_ind(start_ind, title_list):
 def main():
     # read in test data
     val = pd.read_csv("coding/complete_consensus_coding.csv")
-    all_data = pd.read_csv("all_relevant.csv")
-    print(all_data.shape)
+    # all_data = pd.read_csv("all_relevant.csv")
+    print(val.shape)
 
     # get actor labels for validation dataset
-    # get_many_labels(val, "actor")
+    # get_many_labels(val, "actor", "uncontested_actor", "intuitive_approach/n=2_uncontested/actor_preds.csv")
+    # get_many_labels(val, "actor", "contested_actor", "intuitive_approach/n=2_contested/actor_preds.csv")
+    # get_many_labels(val, "actor", "all_actor", "intuitive_approach/n=4/actor_preds.csv")
 
-    # get action labels for validation dataset
-    # get_many_labels(val, "action")
-
+    # get headline stance labels for validation dataset
+    # get_many_labels(val, "headline stance", "uncontested_stance", "intuitive_approach/n=2_uncontested/stance_preds.csv")
+    # get_many_labels(val, "headline stance", "contested_stance", "intuitive_approach/n=2_contested/stance_preds.csv")
+    get_many_labels(val, "headline stance", "all_stance", "intuitive_approach/n=4/stance_preds.csv")
+    
     # get action direction labels for validation dataset
     # get_many_labels(val, "action direction")
 
     # get headline stance labels for validation dataset
     # get_many_labels(val, "headline stance")
 
-    get_gpt_labels_from_ind(0, all_data['title']) 
+    # get_gpt_labels_from_ind(0, all_data['title']) 
 
 
 main()

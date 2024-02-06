@@ -145,7 +145,7 @@ def get_examples(example_type):
         The headline: "Biden signs Emmett Till Antilynching Act as CRT bans restrict talk of race"
         The CLASS of the headline: <CLASS2>
 
-        The headline: "North Hunterdon librarian who fought LGBTQ book ban honored"
+        The headline: "Critical Race Theory is Being Taught , and Has Been for Years , Tucker Carlson Highlights"
         The CLASS of the headline: <CLASS3>
 
         The headline: "General Milley is clueless on critical race theory"
@@ -181,7 +181,7 @@ def get_examples(example_type):
         The headline: "Critical race theory bill gets first vote from Kentucky lawmakers"
         The CLASS of the headline: <CLASS3>
         
-        The headline: "North Hunterdon librarian who fought LGBTQ book ban honored"
+        The headline: "Critical Race Theory is Being Taught , and Has Been for Years , Tucker Carlson Highlights"
         The CLASS of the headline: <CLASS3>
 
         The headline: "General Milley is clueless on critical race theory"

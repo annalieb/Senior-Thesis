@@ -13,15 +13,40 @@ def clean_baseline_entry(entry):
     elif '<CLASS1>' in entry: 
         return '<CLASS1>'
     else: 
-        print("Error! No class found")
-        return None
+        raise Exception("Error! No class found")
+    
+def clean_actor_entry(entry): 
+    if '<NONE/OTHER>' in entry: 
+        return '<NONE/OTHER>'
+    elif '<IMPACTED ACTOR>' in entry: 
+        return '<IMPACTED ACTOR>'
+    elif '<POLITICAL INFLUENCER>' in entry: 
+        return '<POLITICAL INFLUENCER>'
+    elif '<EDUCATIONAL PRACTITIONER>' in entry: 
+        return '<EDUCATIONAL PRACTITIONER>'
+    else: 
+        raise Exception("Error! No class found")
+    
+def clean_stance_entry(entry): 
+    if '<NEUTRAL>' in entry: 
+        return '<NEUTRAL>'
+    elif '<ANTI-CRT>' in entry: 
+        return '<ANTI-CRT>'
+    elif '<DEFENDING CRT>' in entry: 
+        return '<DEFENDING CRT>'
+    else: 
+        raise Exception("Error! No class found")
 
 def get_classwise_f1(inFile): 
     all_labels = pd.read_csv(inFile)
 
     # clean labels
-    all_labels['actor_pred'] = [clean_baseline_entry(a) for a in all_labels['actor_pred']]
-    all_labels['headline stance_pred'] = [clean_baseline_entry(a) for a in all_labels['headline stance_pred']]
+    if inFile.startswith("baseline"): 
+        all_labels['actor_pred'] = [clean_baseline_entry(a) for a in all_labels['actor_pred']]
+        all_labels['headline stance_pred'] = [clean_baseline_entry(a) for a in all_labels['headline stance_pred']]
+    else: 
+        all_labels['actor_pred'] = [clean_actor_entry(a) for a in all_labels['actor_pred']]
+        all_labels['headline stance_pred'] = [clean_stance_entry(a) for a in all_labels['headline stance_pred']]
 
     conversions = {
         # baseline trial items

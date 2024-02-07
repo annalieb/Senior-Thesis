@@ -39,6 +39,7 @@ def clean_stance_entry(entry):
 
 def get_classwise_f1(inFile): 
     all_labels = pd.read_csv(inFile)
+    print(f"\n{inFile}")
 
     # clean labels
     if inFile.startswith("baseline"): 
@@ -84,6 +85,7 @@ def get_classwise_f1(inFile):
     print("weighted average:", weighted_f1)
     print("average (doesn't account for imbalance):", avg_f1)
     print("counts:", Counter(all_labels['actor']))
+    print("-------")
 
     ##### HEADLINE STANCE #####
     stance_true = [conversions[l] for l in all_labels['headline stance']]
@@ -97,6 +99,13 @@ def get_classwise_f1(inFile):
     print("counts:", Counter(all_labels['headline stance']))
     
 
+print("--------- BASELINE RESULTS ---------")
 get_classwise_f1("baseline_approach/n=2_contested.csv")
 get_classwise_f1("baseline_approach/n=2_uncontested.csv")
 get_classwise_f1("baseline_approach/n=4.csv")
+
+print("--------- INTUITIVE RESULTS ---------")
+get_classwise_f1("intuitive_approach/n=0.csv")
+get_classwise_f1("intuitive_approach/n=2_contested.csv")
+get_classwise_f1("intuitive_approach/n=2_uncontested.csv")
+get_classwise_f1("intuitive_approach/n=4.csv")

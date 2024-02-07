@@ -129,7 +129,7 @@ def get_examples(example_type):
         The headline: "The Left Assault on  Racist  Math Continues : DeSantis Rejects CRT - Riddled Textbooks"
         The stance of the headline: <ANTI-CRT>
 
-        The headline: "The librarians uniting to battle school book ban laws"
+        The headline: "Teaching Critical Race Theory in schools raises controversy"
         The stance of the headline: <DEFENDING CRT>
 
         The headline: "Guest commentary : Legislation on critical race theory isn't a good idea"
@@ -177,7 +177,7 @@ def get_examples(example_type):
         The headline: "CURRICULUM CONTROVERSY : District responds to claims it will implement CRT , gender identity lessons"
         The stance of the headline: <ANTI-CRT>
 
-        The headline: "The librarians uniting to battle school book ban laws"
+        The headline: "Teaching Critical Race Theory in schools raises controversy"
         The stance of the headline: <DEFENDING CRT>
 
         The headline: "Guest commentary : Legislation on critical race theory isn't a good idea"
@@ -364,7 +364,7 @@ def main():
     # get headline stance labels for validation dataset
     # get_many_labels(val, "headline stance", "uncontested_stance", "intuitive_approach/n=2_uncontested/stance_preds.csv")
     # get_many_labels(val, "headline stance", "contested_stance", "intuitive_approach/n=2_contested/stance_preds.csv")
-    get_many_labels(val, "headline stance", "all_stance", "intuitive_approach/n=4/stance_preds.csv")
+    # get_many_labels(val, "headline stance", "all_stance", "intuitive_approach/n=4/stance_preds.csv")
     
     # get action direction labels for validation dataset
     # get_many_labels(val, "action direction")

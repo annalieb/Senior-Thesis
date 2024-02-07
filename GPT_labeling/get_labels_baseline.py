@@ -121,7 +121,7 @@ def get_examples(example_type):
         The headline: "The Left Assault on  Racist  Math Continues : DeSantis Rejects CRT - Riddled Textbooks"
         The CLASS of the headline: <CLASS1>
 
-        The headline: "The librarians uniting to battle school book ban laws"
+        The headline: "Teaching Critical Race Theory in schools raises controversy"
         The CLASS of the headline: <CLASS2>
 
         The headline: "Guest commentary : Legislation on critical race theory isn't a good idea"
@@ -163,7 +163,7 @@ def get_examples(example_type):
         The headline: "CURRICULUM CONTROVERSY : District responds to claims it will implement CRT , gender identity lessons"
         The CLASS of the headline: <CLASS1>
 
-        The headline: "The librarians uniting to battle school book ban laws"
+        The headline: "Teaching Critical Race Theory in schools raises controversy"
         The CLASS of the headline: <CLASS2>
 
         The headline: "Guest commentary : Legislation on critical race theory isn't a good idea"

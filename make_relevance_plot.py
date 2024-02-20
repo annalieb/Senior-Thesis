@@ -110,9 +110,9 @@ def main():
     #                 "VA", "WV", "WI", "WY"],
     #                "bimonthly")
     # plot_relevance(["FL", "OK", "TX", "VA", "USA"], "bimonthly")
-    plot_relevance(["USA", "USA_woke", "USA_covid", "USA_trans"], "bimonthly", False)
-    plot_relevance(["USA", "USA_woke", "USA_covid", "USA_trans"], "daily", True)
-    plot_relevance(["FL", "FL_woke", "FL_covid", "FL_trans"], "bimonthly", False)
+    plot_relevance(["USA", "USA_woke", "USA_masking", "USA_trans"], "bimonthly", False)
+    plot_relevance(["USA", "USA_woke", "USA_masking", "USA_trans"], "daily", True)
+    # plot_relevance(["FL", "FL_woke", "FL_covid", "FL_trans"], "bimonthly", False)
 
     
 

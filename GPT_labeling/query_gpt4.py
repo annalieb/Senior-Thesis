@@ -20,18 +20,18 @@ client = OpenAI()
 # def completions_with_backoff(**kwargs):
 #     return client.chat.completions.create(**kwargs)
 
-def single_query(messages,stop="\n\n",maxTokens=128):
+def single_query(messages,stop="\n\n",maxTokens=256):
 
     # calculate absolute max tokens in context
-    num_prompt_tokens = count_tokens_from_msgs(messages)
-    maxTokens = 4096 - num_prompt_tokens 
+    # num_prompt_tokens = count_tokens_from_msgs(messages)
+    # maxTokens = 4096 - num_prompt_tokens 
     # alternatively, keep maxTokens at hard-coded value (500) to avoid buying excessive tokens
 
     response = {}
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4-1106-preview", 
+            model="gpt-4-turbo-preview", 
             messages=messages, # previous message history
             temperature=0, # default 1, ranges from 0 to 2, with 0 = more deterministic and 2 = more random
             max_tokens=maxTokens, # max num tokens to generate in completion
@@ -55,7 +55,7 @@ def single_query(messages,stop="\n\n",maxTokens=128):
 
 def count_tokens_from_msgs(messages, model="gpt-4-1106-preview"):
     '''Returns the number of tokens in a ChatGPT message history (including system message). 
-    Uses gpt-3.5-turbo tokenizer encoding. '''
+    Uses gpt-4-turbo tokenizer encoding. '''
     encoding = tiktoken.encoding_for_model(model)
     num_tokens = 0
     for message in messages:

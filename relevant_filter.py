@@ -30,12 +30,11 @@ def get_relevant(titles_list):
         else: 
             # other searches: ("trans" or "transgender") 
             # ("covid" or "pandemic" or "mask" or "masking")
+            # ("mask" or "masking")
             # ("woke")
             t = t.lower()
             t = t.split()
-            if (("covid" in t) or 
-                ("pandemic" in t) or 
-                ("mask" in t) or ("masking" in t)): 
+            if (("mask" in t) or ("masking" in t)): 
                 labels.append(1)
             else: 
                 labels.append(0)
@@ -49,7 +48,7 @@ def write_relevant_csv(df, relevance_labels, state_abrv):
     Returns a dataframe with a new column for the labels
     ("relevant") and writes it to csv.'''
     df['relevant'] = relevance_labels
-    df.to_csv(f"relevant_results/{state_abrv}_covid_labeled.csv", index=False)
+    df.to_csv(f"relevant_results/{state_abrv}_masking_labeled.csv", index=False)
     return df
 
 def get_relevance_for(state_abrv):
@@ -85,7 +84,7 @@ def main():
     #             get_relevance_for(state)
     #         except:
     #             print(f"error getting relevance labels for {state}")
-    get_relevance_for("FL")
+    get_relevance_for("USA")
             
     
 ##    relevant_results = results[results['rule_label'] == 1]

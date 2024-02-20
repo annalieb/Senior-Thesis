@@ -47,7 +47,8 @@ def get_gpt_from_ind(start_ind, title_list, query_type):
             pred = get_stance_blurb(t).content
         # print(pred, t) # uncomment for verbose version (see every headline and label)
         generated_rows.append([t, pred]) # title, gpt_label
-        if i % 10 == 0:
+        print(".", end="")
+        if i % 20 == 0:
             print(f"processed headlines up to index {start_ind + i}, writing to file.")
             with open("augmentation_approach/GPT_actor_blurbs.csv", 'a', newline='\n') as f:
                 writer = csv.writer(f)
@@ -59,6 +60,6 @@ def main():
     headlines = pd.read_csv("../coverage_by_unique_headline.csv")
     print(headlines.shape)
 
-    get_gpt_from_ind(463, headlines['title'], "actor") 
+    get_gpt_from_ind(5759, headlines['title'], "actor") 
 
 main()

@@ -47,8 +47,7 @@ def get_gpt_from_ind(start_ind, title_list, query_type):
             pred = get_stance_blurb(t).content
         # print(pred, t) # uncomment for verbose version (see every headline and label)
         generated_rows.append([t, pred]) # title, gpt_label
-        print(i % 20)
-        if i % 20 == 0:
+        if i % 2 == 0:
             with open("augmentation_approach/GPT_actor_blurbs.csv", 'a', newline='\n') as f:
                 writer = csv.writer(f)
                 writer.writerows(generated_rows)
@@ -60,6 +59,6 @@ def main():
     headlines = pd.read_csv("../coverage_by_unique_headline.csv")
     print(headlines.shape)
 
-    get_gpt_from_ind(9122, headlines['title'], "actor") 
+    get_gpt_from_ind(11685, headlines['title'], "actor") # started with Anna API key at ind 11464
 
 main()

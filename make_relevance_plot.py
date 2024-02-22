@@ -60,14 +60,15 @@ def avg_by_date(inFile, interval="daily"):
     means = means.reset_index()
     return means
 
-def plot_relevance(states_list, interval="daily", filter=False):
+def plot_relevance(states_list, interval="daily", smoothing=False):
     print(interval)
     first_s = states_list[0]
     means = avg_by_date(f"relevant_results/{first_s}_labeled.csv",
                                    interval)
     labels = {"date": "Date",
               "relevant": "Relevance (proportion of state coverage)"}
-    if filter: 
+    if smoothing:
+        # https://plotly.com/python/smoothing/
         fig = px.line(means, x='date', y=signal.savgol_filter(means['relevant'],
                                                           53, # window size used for filtering
                                                           5)) # order of fitted polynomial'relevant', labels=labels)

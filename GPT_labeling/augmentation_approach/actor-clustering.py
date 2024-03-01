@@ -20,18 +20,18 @@ def prep_data(inFile):
     '''read in GPT-4 actor descriptions, filter out "no actor" type descriptions'''
 
     actor_desc = pd.read_csv(inFile)
-    all_docs = actor_desc['actor_blurb'].tolist()
+    all_docs = actor_desc['title'].tolist()
     
-    no_actor = []
-    docs = []
-    for i, d in enumerate(all_docs): 
-        if ("does not reference" in d) or ("does not explicitly reference" in d): 
-            no_actor.append(all_docs[i])
-        else: 
-            docs.append(all_docs[i])
+    # no_actor = []
+    # docs = []
+    # for i, d in enumerate(all_docs): 
+    #     if ("does not reference" in d) or ("does not explicitly reference" in d): 
+    #         no_actor.append(all_docs[i])
+    #     else: 
+    #         docs.append(all_docs[i])
 
-    print("no actor identified for", len(no_actor), "docs,", len(docs), "docs remaining")
-    return docs
+    # print("no actor identified for", len(no_actor), "docs,", len(docs), "docs remaining")
+    return all_docs
 
 def make_topic_model(min_topic_size, ngram): 
     '''Construct BERTopic model'''
@@ -59,17 +59,24 @@ def make_topic_model(min_topic_size, ngram):
 def main():
     docs = prep_data("GPT_actor_blurbs.csv")
 
-    topic_model = make_topic_model(150, "bigram")
+    topic_model = make_topic_model(90, "unigram")
 
     print("Fitting model...")
     topics, probs = topic_model.fit_transform(docs)
 
     info = topic_model.get_topic_info()
     print(info)
-    info.to_csv("bertopic_clusters_min=150_ngram=2.csv")
+    info.to_csv("baseline_bertopic_clusters_min=90_ngram=1.csv")
 
-main()
+# main()
 # view stopwords list: 
 # print("stopwords: ", stopwords.words('english') + ["actor", "actors", 
 #                                                    "critical", "race", "theory", 
 #                                                    "headline"])
+    
+# count = 0
+# docs = prep_data("GPT_actor_blurbs.csv")
+# for d in docs: 
+#     if "No new teachers" in d: 
+#         count += 1
+# print(count) # output: 359

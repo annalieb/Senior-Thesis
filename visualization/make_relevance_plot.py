@@ -55,7 +55,7 @@ def avg_by_date(inFile, interval="daily"):
 
     relevance_labels = raw_results['relevant'].tolist()
     relevance_by_date = pd.DataFrame(list(zip(dates, relevance_labels)),
-               columns =['date', 'relevant'])
+                                     columns =['date', 'relevant'])
     means = relevance_by_date.groupby('date').mean()
     means = means.reset_index()
     return means

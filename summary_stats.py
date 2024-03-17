@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import numpy as np
+from collections import Counter
 
 def count_unique_domains(): 
     '''Count the number of unique domains'''
@@ -42,5 +43,9 @@ def count_total_headlines():
     print("Total num unique headlines:", total_df['domain'].unique().shape)
     return total
 
-count_total_headlines()
-# count_unique_domains()
+def count_label(label_name): 
+    all_coverage = pd.read_excel("coverage_by_unique_headline.xlsx")
+    c = Counter(all_coverage[label_name].tolist())
+    return c
+
+print(count_label("stance"))

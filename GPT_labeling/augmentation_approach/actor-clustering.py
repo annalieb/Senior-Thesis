@@ -68,7 +68,7 @@ def main():
     print(info)
     info.to_csv("baseline_bertopic_clusters_min=90_ngram=1.csv")
 
-# main()
+main()
 # view stopwords list: 
 # print("stopwords: ", stopwords.words('english') + ["actor", "actors", 
 #                                                    "critical", "race", "theory", 

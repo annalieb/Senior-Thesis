@@ -65,6 +65,7 @@ def plot_relevance(states_list, interval="daily", smoothing=False):
     first_s = states_list[0]
     means = avg_by_date(f"relevant_results/{first_s}_labeled.csv",
                                    interval)
+    # means.to_csv("related_term_daily.csv", index=False)
     labels = {"date": "Date",
               "relevant": "Relevance (proportion of state coverage)"}
     if smoothing:
@@ -80,12 +81,13 @@ def plot_relevance(states_list, interval="daily", smoothing=False):
     for s in states_list[1:]:
         means = avg_by_date(f"relevant_results/{s}_labeled.csv",
                                        interval)
+        means.to_csv("related_term_daily_2.csv", index=False)
         n_intervals = len(means['relevant'])
         trimester = (n_intervals // 3)
         if max(means['relevant'][trimester*2: trimester*3] > 0.04):
             print(f"Warning: {s} has high coverage {means['date'][trimester*2]} through {means['date'][trimester*3]}")
             print(f"max:{max(means['relevant'][trimester*2:(trimester*3)])}")
-        if filter: 
+        if smoothing: 
             fig.add_scatter(x=means['date'],
                             y=signal.savgol_filter(means['relevant'],
                                                    53, # window size used for filtering
@@ -100,9 +102,10 @@ def plot_relevance(states_list, interval="daily", smoothing=False):
     fig.show()
 
 def main():
-##    plot_relevance(["FL", "OK", "VA", "MS", "SD"],
-##                   "bimonthly")
-##
+    # plot_relevance(["USA"], "bimonthly")
+    # plot_relevance(["FL", "OK", "VA", "ID", "MT"], "bimonthly") # first movers
+    # plot_relevance(["FL", "OK", "VA", "MS", "SD"], "bimonthly") # second wave
+    
     # plot_relevance(["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL",
     #                 "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA",
     #                 "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE",
@@ -111,8 +114,8 @@ def main():
     #                 "VA", "WV", "WI", "WY"],
     #                "bimonthly")
     # plot_relevance(["FL", "OK", "TX", "VA", "USA"], "bimonthly")
-    plot_relevance(["USA", "USA_woke", "USA_masking", "USA_trans"], "bimonthly", False)
-    plot_relevance(["USA", "USA_woke", "USA_masking", "USA_trans"], "daily", True)
+    # plot_relevance(["USA", "USA_woke", "USA_masking", "USA_trans"], "bimonthly", False)
+    plot_relevance(["USA", "USA_woke", "USA_trans"], "daily", False)
     # plot_relevance(["FL", "FL_woke", "FL_covid", "FL_trans"], "bimonthly", False)
 
     

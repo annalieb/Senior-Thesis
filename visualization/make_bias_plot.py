@@ -62,6 +62,7 @@ def avg_by_date(inFile, metric="median", interval="monthly"):
 def plot_bias(interval, metric):
     print(interval)
     means = avg_by_date("matched_bias_scores.csv", metric, interval)
+    # means.to_excel("visualization/PAB_over_time.xlsx", index=False)
     labels = {"date": "Date",
               "score": "Median partisan audience bias score"}
     fig = px.line(means, x='date', y='score', labels=labels, 

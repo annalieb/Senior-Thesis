@@ -82,6 +82,7 @@ def count_by_date(inFile, frame, interval="monthly"):
 
     print(prop_results.shape)
     display(prop_results)
+    # prop_results.to_excel("visualization/actors_over_time.xlsx", index=False)
 
     prop_results = prop_results.fillna(0)
     

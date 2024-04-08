@@ -101,36 +101,27 @@ consensus[col_names] <- lapply(consensus[col_names], factor)
 # ... Light’s solution can easily be implemented by computing kappa for all 
 # coder pairs using statistical software then manually computing the arithmetic mean.
 
-# actors alpha: 0.672
+# actors alpha: 0.673
 actors <- cbind(r1$actor, r2$actor)
 actors_alpha <- kappa2(actors)
 actors_alpha
 
-# with gpt: 0.751 
-actors <- cbind(consensus$actor, gpt$actor)
-actors_alpha <- kappa2(actors)
-actors_alpha
+# with gpt: 0.696
+a1 <- kappa2(cbind(r1$actor, r2$actor))$value
+a2 <- kappa2(cbind(r1$actor, gpt$actor))$value
+a3 <- kappa2(cbind(gpt$actor, r2$actor))$value
+mean(c(a1, a2, a3))
 
 # action alpha: 0.609
 kappa2(cbind(r1$action, r2$action))
 
-# with gpt
-action <- cbind(consensus$action, gpt$action)
-action_alpha <- kappam.fleiss(action)
-action_alpha
-
 # action direction: 0.681 
 kappa2(cbind(r1$action.direction, r2$action.direction))
-# with gpt: 0.633
-a1 <- kappa2(cbind(r1$action.direction, r2$action.direction))$value
-a2 <- kappa2(cbind(r1$action.direction, gpt$action.direction))$value
-a3 <- kappa2(cbind(gpt$action.direction, r2$action.direction))$value
-mean(c(a1, a2, a3))
 
 # headline stance: 0.742 
 kappa2(cbind(r1$headline.stance, r2$headline.stance))
 # with gpt: 0.662
-a1 <- kappa2(cbind(r1$headline.stance, r3$headline.stance))$value
+a1 <- kappa2(cbind(r1$headline.stance, r2$headline.stance))$value
 a2 <- kappa2(cbind(r1$headline.stance, gpt$headline.stance))$value
-a3 <- kappa2(cbind(gpt$headline.stance, r3$headline.stance))$value
+a3 <- kappa2(cbind(gpt$headline.stance, r2$headline.stance))$value
 mean(c(a1, a2, a3))

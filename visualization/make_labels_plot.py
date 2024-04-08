@@ -82,7 +82,7 @@ def count_by_date(inFile, frame, interval="monthly"):
 
     print(prop_results.shape)
     display(prop_results)
-    # prop_results.to_excel("visualization/actors_over_time.xlsx", index=False)
+    prop_results.to_excel("stances_over_time.xlsx", index=False)
 
     prop_results = prop_results.fillna(0)
     
@@ -91,12 +91,12 @@ def count_by_date(inFile, frame, interval="monthly"):
 
 def plot_labels(interval):
     print(interval)
-    counts = count_by_date("coverage_by_unique_headline.csv", "actor", interval)
+    counts = count_by_date("../coverage_by_unique_headline.csv", "stance", interval)
     # switch out <DEFENDING CRT> or <POLITICAL INFLUENCER>
-    fig = px.line(counts, x='date', y='<POLITICAL INFLUENCER>', labels={"date": "Date", 
-                                                                 "<POLITICAL INFLUENCER>":"Label proportion"},
-                  title=f"Actor labels over time")
-    for label in counts.columns[1:5]: # 1:4 for stance, 1:5 for actor
+    fig = px.line(counts, x='date', y='<DEFENDING CRT>', labels={"date": "Date", 
+                                                                 "<DEFENDING CRT>":"Label proportion"},
+                  title=f"Stance labels over time")
+    for label in counts.columns[1:4]: # 1:4 for stance, 1:5 for actor
         fig.add_scatter(x=counts['date'],
                         y=counts[label],
                         mode='lines',

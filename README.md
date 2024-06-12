@@ -6,7 +6,7 @@ The main motivations, uses, and features of this dataset are described in my Sen
 
 ### Replication data and code
 
-Data files and code required for replication are explained below. The following are not included in this repository due to redundancy, but can still be generated using the included python scripts: 
+Data files and code required for replication are explained below. In the process of combining metrics to build a cohesive dataset, some data are repeated. Please note these redundancies: 
 
 * `gdelt_results` folder (redundant with the `relevant_results` folder)
 * `all_relevant.csv` (redundant with `coverage_by_unique_headline.xlsx`)

@@ -44,6 +44,7 @@ def single_query(messages,stop="\n\n",maxTokens=256):
         pass
     except openai.RateLimitError as e:
         # this shouldn't ever happen if exponential backoff is being used 
+        # uncomment @backoff.on_exception to use exponential backoff
         print("Uh oh... exponential backoff isn't working")
         print(f"OpenAI API request exceeded rate limit: {e}")
         pass
@@ -68,35 +69,35 @@ def count_tokens_from_msgs(messages, model="gpt-4-1106-preview"):
     return num_tokens
 
 def main():
-    print("input tokens per request", count_tokens_from_msgs([
-        {"role": "user", "content": '''News article headlines can shape the ways that people perceive current events and understand the world around them. Therefore, nuances in the headline's language and word choice can be very important. The goal of this task is to identify the stance or bias of a news headline. 
+    # print("input tokens per request", count_tokens_from_msgs([
+    #     {"role": "user", "content": '''News article headlines can shape the ways that people perceive current events and understand the world around them. Therefore, nuances in the headline's language and word choice can be very important. The goal of this task is to identify the stance or bias of a news headline. 
 
-    You will be given a news headline related to critical race theory (CRT). Your response should identify the stance of the headline. Your response must be one of the following predefined labels: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
+    # You will be given a news headline related to critical race theory (CRT). Your response should identify the stance of the headline. Your response must be one of the following predefined labels: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. 
 
-    Please carefully consider the following label definitions: 
-    <ANTI-CRT> - The headline favors an anti-CRT viewpoint. Its viewpoint appears to oppose CRT, support CRT bans, or make alarmist claims about threats posed by CRT. It has an anti-CRT stance. 
-    <DEFENDING CRT> - The headline favors a viewpoint that defends CRT. Its viewpoint appears to support CRT, oppose CRT bans, or minimize the threat posed by CRT-related curricula. It has a stance that defends CRT. 
-    <NEUTRAL> - The headline does not have a strong viewpoint. It is neutral or impartial. It reports on news events without favoring one viewpoint or the other (neither anti-CRT nor defending CRT). 
+    # Please carefully consider the following label definitions: 
+    # <ANTI-CRT> - The headline favors an anti-CRT viewpoint. Its viewpoint appears to oppose CRT, support CRT bans, or make alarmist claims about threats posed by CRT. It has an anti-CRT stance. 
+    # <DEFENDING CRT> - The headline favors a viewpoint that defends CRT. Its viewpoint appears to support CRT, oppose CRT bans, or minimize the threat posed by CRT-related curricula. It has a stance that defends CRT. 
+    # <NEUTRAL> - The headline does not have a strong viewpoint. It is neutral or impartial. It reports on news events without favoring one viewpoint or the other (neither anti-CRT nor defending CRT). 
 
-    Note that the impact of the event in the headline is different from the headline stance or bias. For example, consider the following headline: "Florida bans critical race theory from classrooms." For this headline, the action taking place has an anti-CRT impact because the ban would prevent teaching CRT in classrooms. However, in this case, the headline stance is neutral because the headline does not reveal a strong journalistic bias for or against CRT. Therefore, this headline stance would have the <NEUTRAL> label.
+    # Note that the impact of the event in the headline is different from the headline stance or bias. For example, consider the following headline: "Florida bans critical race theory from classrooms." For this headline, the action taking place has an anti-CRT impact because the ban would prevent teaching CRT in classrooms. However, in this case, the headline stance is neutral because the headline does not reveal a strong journalistic bias for or against CRT. Therefore, this headline stance would have the <NEUTRAL> label.
 
-    Your interpretations of the headline should be guided by polarizing terms that stand out in the headline, which may indicate the headline's stance. Consider that the headline stance might belong to one of the categories implicitly, without direct reference to exact words or examples provided in the label definition.
+    # Your interpretations of the headline should be guided by polarizing terms that stand out in the headline, which may indicate the headline's stance. Consider that the headline stance might belong to one of the categories implicitly, without direct reference to exact words or examples provided in the label definition.
 
-    Please consider the following headline: "this is a test"
-    Consider any biased framing in the headline. What is the headline's stance? Please respond with exactly one of the following predefined labels that best describes the stance in this headline: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. '''
-    }
-    ]))
+    # Please consider the following headline: "this is a test"
+    # Consider any biased framing in the headline. What is the headline's stance? Please respond with exactly one of the following predefined labels that best describes the stance in this headline: <ANTI-CRT>, <DEFENDING CRT>, or <NEUTRAL>. '''
+    # }
+    # ]))
 
-    print("output tokens per request", count_tokens_from_msgs([
-        {"role": "assistant", "content": '''<NEUTRAL>'''
-    }
-    ]))
+    # print("output tokens per request", count_tokens_from_msgs([
+    #     {"role": "assistant", "content": '''<NEUTRAL>'''
+    # }
+    # ]))
 
-    # if len(sys.argv) < 2:
-    #     print("Usage: python query_gpt4.py input")
-    #     return
-    # result = single_query(sys.argv[1]) 
-    # print(result)
+    if len(sys.argv) < 2:
+        print("Usage: python query_gpt4.py input")
+        return
+    result = single_query(sys.argv[1]) 
+    print(result)
 
 if __name__ == '__main__':
     main()

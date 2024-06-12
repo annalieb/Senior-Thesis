@@ -59,6 +59,7 @@ def main():
     headlines = pd.read_csv("../coverage_by_unique_headline.csv")
     print(headlines.shape)
 
-    get_gpt_from_ind(11685, headlines['title'], "actor") # started with Anna API key at ind 11464
+    start_index = 0
+    get_gpt_from_ind(start_index, headlines['title'], "actor") 
 
 main()
